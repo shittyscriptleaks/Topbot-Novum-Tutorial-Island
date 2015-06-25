@@ -7,6 +7,8 @@ import deob.step.*;
 import deob.util.WebUtil;
 import org.tbot.bot.TBot;
 import org.tbot.internal.AbstractScript;
+import org.tbot.internal.Manifest;
+import org.tbot.internal.ScriptCategory;
 import org.tbot.internal.event.listeners.PaintListener;
 import org.tbot.internal.handlers.RandomHandler;
 import org.tbot.methods.*;
@@ -15,6 +17,11 @@ import org.tbot.wrappers.WidgetChild;
 
 import java.awt.*;
 
+@Manifest(name = "Tutorial Island",
+        description = "Completes tutorial island for you.. for free!",
+        authors = { "Novum" },
+        openSource = true,
+        category = ScriptCategory.OTHER)
 public final class TutorialScript extends AbstractScript implements PaintListener {
 
     public TutorialScript() {
