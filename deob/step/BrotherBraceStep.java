@@ -49,10 +49,8 @@ public final class BrotherBraceStep {
     }
 
     private static void talkToBrother() {
-        if (Npcs.getNearest("Brother Brace") != null) {
-            if (Util.walkToLocatable(ENTRACE_TILE, 7)) {
-                Util.walkToAndInteract(Npcs.getNearest("Brother Brace"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
-            }
+        if (Util.walkToLocatable(ENTRACE_TILE, 7)) {
+            Util.walkToAndInteract(Npcs.getNearest("Brother Brace"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 

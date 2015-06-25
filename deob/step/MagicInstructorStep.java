@@ -37,6 +37,10 @@ public final class MagicInstructorStep {
                 Settings.get(281) == S_MAGIC_TAB_OPEN_TALK_TO_MAGIC_INSTRUCTOR ||
                 Settings.get(281) == S_LEAVE_TALK_TO_MAGIC_INSTRUCTOR) {
 
+            if (Magic.hasSpellSelected()) {
+                Magic.deselectSpell();
+            }
+
             MagicInstructorStep.talk();
         }
 
