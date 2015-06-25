@@ -1,5 +1,10 @@
 package deob;
 
+import deob.condition.HasNoClosableWidgetCondition;
+import deob.condition.IsBankNotOpenCondition;
+import deob.condition.IsWidgetNotOpenCondition;
+import deob.step.*;
+import deob.util.WebUtil;
 import org.tbot.bot.TBot;
 import org.tbot.internal.AbstractScript;
 import org.tbot.internal.event.listeners.PaintListener;

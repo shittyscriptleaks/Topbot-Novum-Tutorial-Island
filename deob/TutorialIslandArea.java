@@ -1,5 +1,6 @@
 package deob;
 
+import deob.util.WebUtil;
 import org.tbot.methods.web.Web;
 import org.tbot.methods.web.actions.ObjectAction;
 import org.tbot.methods.web.areas.WebArea;
@@ -65,20 +66,20 @@ public final class TutorialIslandArea extends WebArea {
         web.addWalkConnection(webNode28, webNode29);
         web.addWalkConnection(webNode30, webNode31);
         web.addWalkConnection(webNode31, webNode32);
-        webNode29.addConnection(new ActionConnection(webNode29, webNode30, new ObjectAction(webNode30.getLocation(), WebUtil.decryptStringStub("J<a!"), WebUtil.decryptStringStub("A#k="))));
-        webNode27.addConnection(new ActionConnection(webNode27, webNode28, new jj(this, webNode27.getLocation(), WebUtil.decryptStringStub("B2|4ksj<a!"), WebUtil.decryptStringStub("A#k="))));
-        webNode25.addConnection(new ActionConnection(webNode25, webNode26, new ObjectAction(webNode26.getLocation(), WebUtil.decryptStringStub("J<a!"), WebUtil.decryptStringStub("A#k="))));
-        webNode23.addConnection(new ActionConnection(webNode23, webNode24, new ObjectAction(webNode24.getLocation(), WebUtil.decryptStringStub("J<a!"), WebUtil.decryptStringStub("A#k="))));
-        webNode21.addConnection(new ActionConnection(webNode21, webNode22, new ObjectAction(new Tile(3111, 9526), WebUtil.decryptStringStub("B2j7k!"), WebUtil.decryptStringStub("M?g>l~{#"))));
-        webNode20.addConnection(new ActionConnection(webNode20, webNode19, new ObjectAction(webNode19.getLocation(), WebUtil.decryptStringStub("I2z6"), WebUtil.decryptStringStub("A#k="))));
-        webNode19.addConnection(new ActionConnection(webNode19, webNode20, new ObjectAction(webNode19.getLocation(), WebUtil.decryptStringStub("I2z6"), WebUtil.decryptStringStub("A#k="))));
-        webNode16.addConnection(new ActionConnection(webNode16, webNode17, new ObjectAction(webNode16.getLocation(), WebUtil.decryptStringStub("I2z6"), WebUtil.decryptStringStub("A#k="))));
-        webNode13.addConnection(new ActionConnection(webNode13, webNode14, new ObjectAction(new Tile(3088, 3119), WebUtil.decryptStringStub("B2j7k!"), WebUtil.decryptStringStub("M?g>l~j<y="))));
-        webNode11.addConnection(new ActionConnection(webNode11, webNode12, new ObjectAction(webNode11.getLocation(), WebUtil.decryptStringStub("J<a!"), WebUtil.decryptStringStub("A#k="))));
-        webNode7.addConnection(new ActionConnection(webNode7, webNode8, new ObjectAction(webNode8.getLocation(), WebUtil.decryptStringStub("J<a!"), WebUtil.decryptStringStub("A#k="))));
-        webNode5.addConnection(new ActionConnection(webNode5, webNode6, new ObjectAction(webNode5.getLocation(), WebUtil.decryptStringStub("J<a!"), WebUtil.decryptStringStub("A#k="))));
-        webNode3.addConnection(new ActionConnection(webNode3, webNode4, new ObjectAction(webNode4.getLocation(), WebUtil.decryptStringStub("I2z6"), WebUtil.decryptStringStub("A#k="))));
-        webNode.addConnection(new ActionConnection(webNode, webNode2, new ObjectAction(webNode2.getLocation(), WebUtil.decryptStringStub("J<a!"), WebUtil.decryptStringStub("A#k="))));
+        webNode29.addConnection(new ActionConnection(webNode29, webNode30, new ObjectAction(webNode30.getLocation(), "Door", "Open")));
+        webNode27.addConnection(new ActionConnection(webNode27, webNode28, new OpenLargeDoorObjectAction(this, webNode27.getLocation(), "Large door", "Open")));
+        webNode25.addConnection(new ActionConnection(webNode25, webNode26, new ObjectAction(webNode26.getLocation(), "Door", "Open")));
+        webNode23.addConnection(new ActionConnection(webNode23, webNode24, new ObjectAction(webNode24.getLocation(), "Door", "Open")));
+        webNode21.addConnection(new ActionConnection(webNode21, webNode22, new ObjectAction(new Tile(3111, 9526), "Ladder", "Climb-up")));
+        webNode20.addConnection(new ActionConnection(webNode20, webNode19, new ObjectAction(webNode19.getLocation(), "Gate", "Open")));
+        webNode19.addConnection(new ActionConnection(webNode19, webNode20, new ObjectAction(webNode19.getLocation(), "Gate", "Open")));
+        webNode16.addConnection(new ActionConnection(webNode16, webNode17, new ObjectAction(webNode16.getLocation(), "Gate", "Open")));
+        webNode13.addConnection(new ActionConnection(webNode13, webNode14, new ObjectAction(new Tile(3088, 3119), "Ladder", "Climb-down")));
+        webNode11.addConnection(new ActionConnection(webNode11, webNode12, new ObjectAction(webNode11.getLocation(), "Door", "Open")));
+        webNode7.addConnection(new ActionConnection(webNode7, webNode8, new ObjectAction(webNode8.getLocation(), "Door", "Open")));
+        webNode5.addConnection(new ActionConnection(webNode5, webNode6, new ObjectAction(webNode5.getLocation(), "Door", "Open")));
+        webNode3.addConnection(new ActionConnection(webNode3, webNode4, new ObjectAction(webNode4.getLocation(), "Gate", "Open")));
+        webNode.addConnection(new ActionConnection(webNode, webNode2, new ObjectAction(webNode2.getLocation(), "Door", "Open")));
     }
 
     @Override
