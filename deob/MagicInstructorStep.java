@@ -7,7 +7,9 @@ import org.tbot.methods.combat.magic.Magic;
 import org.tbot.methods.combat.magic.SpellBooks;
 import org.tbot.wrappers.Tile;
 
-public class MagicInstructorStep {
+public final class MagicInstructorStep {
+
+    private MagicInstructorStep() { }
 
     private static final Tile ENTRANCE_TILE = new Tile(3141, 3087);
 

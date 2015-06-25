@@ -2,7 +2,9 @@ package deob;
 
 import org.tbot.bot.TBot;
 
-public class WebUtil {
+public final class WebUtil {
+
+    private WebUtil() { }
 
     public static String decryptStringStub(String string) {
         int n = string.length();

@@ -7,7 +7,7 @@ import org.tbot.methods.web.nodes.WebNode;
 import org.tbot.methods.web.nodes.connections.ActionConnection;
 import org.tbot.wrappers.Tile;
 
-final class TutorialIslandArea extends WebArea {
+public final class TutorialIslandArea extends WebArea {
 
     @Override
     public void addTo(Web web) {

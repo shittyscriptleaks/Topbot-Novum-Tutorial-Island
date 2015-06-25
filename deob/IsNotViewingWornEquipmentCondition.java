@@ -3,7 +3,7 @@ package deob;
 import org.tbot.methods.Settings;
 import org.tbot.util.Condition;
 
-final class IsNotViewingWornEquipmentCondition implements Condition {
+public final class IsNotViewingWornEquipmentCondition implements Condition {
 
     private static final int S_VIEW_WORN_EQUIPMENT = 400;
 

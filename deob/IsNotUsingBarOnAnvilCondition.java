@@ -3,7 +3,7 @@ package deob;
 import org.tbot.methods.Settings;
 import org.tbot.util.Condition;
 
-final class IsNotUsingBarOnAnvilCondition implements Condition {
+public final class IsNotUsingBarOnAnvilCondition implements Condition {
 
     private static final int S_USE_BAR_ON_ANVIL = 340;
 

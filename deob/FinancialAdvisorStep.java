@@ -8,7 +8,9 @@ import org.tbot.methods.walking.Walking;
 import org.tbot.wrappers.Tile;
 import org.tbot.wrappers.WidgetChild;
 
-public class FinancialAdvisorStep {
+public final class FinancialAdvisorStep {
+
+    private FinancialAdvisorStep() { }
 
     private static final Tile ENTRANCE_TILE = new Tile(3127, 3124);
 

@@ -6,7 +6,9 @@ import org.tbot.methods.tabs.Inventory;
 import org.tbot.wrappers.Tile;
 import org.tbot.wrappers.WidgetChild;
 
-public class CombatInstructorStep {
+public final class CombatInstructorStep {
+
+    private CombatInstructorStep() { }
 
     private static final Tile ENTRACE_TILE = new Tile(3107, 9509);
 

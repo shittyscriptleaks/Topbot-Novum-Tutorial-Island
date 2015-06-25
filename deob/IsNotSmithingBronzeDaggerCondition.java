@@ -3,7 +3,7 @@ package deob;
 import org.tbot.methods.Settings;
 import org.tbot.util.Condition;
 
-final class IsNotSmithingBronzeDaggerCondition implements Condition {
+public final class IsNotSmithingBronzeDaggerCondition implements Condition {
 
     private static final int S_SMITH_BRONZE_DAGGER = 350;
 

@@ -11,7 +11,9 @@ import org.tbot.wrappers.GameObject;
 import org.tbot.wrappers.Tile;
 import org.tbot.wrappers.WidgetChild;
 
-public class SmithingGuyStep {
+public final class SmithingGuyStep {
+
+    private SmithingGuyStep() { }
 
     private static final Tile ENTRANCE_TILE = new Tile(3080, 9501);
 

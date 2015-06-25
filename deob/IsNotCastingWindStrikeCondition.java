@@ -3,7 +3,7 @@ package deob;
 import org.tbot.methods.Settings;
 import org.tbot.util.Condition;
 
-final class IsNotCastingWindStrikeCondition implements Condition {
+public final class IsNotCastingWindStrikeCondition implements Condition {
 
     @Override
     public boolean check() {

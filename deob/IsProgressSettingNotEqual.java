@@ -3,11 +3,11 @@ package deob;
 import org.tbot.methods.Settings;
 import org.tbot.util.Condition;
 
-final class IsProgressSettingNotEqual implements Condition {
+public final class IsProgressSettingNotEqual implements Condition {
 
-    final int to;
+    private final int to;
 
-    IsProgressSettingNotEqual(int n) {
+    public IsProgressSettingNotEqual(int n) {
         this.to = n;
     }
 

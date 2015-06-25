@@ -9,7 +9,9 @@ import org.tbot.methods.tabs.Emotes;
 import org.tbot.methods.walking.Walking;
 import org.tbot.wrappers.Tile;
 
-public class QuestGuyStep {
+public final class QuestGuyStep {
+
+    private QuestGuyStep() { }
 
     private static final Tile ENTRACE_TILE = new Tile(3085, 3122);;
 

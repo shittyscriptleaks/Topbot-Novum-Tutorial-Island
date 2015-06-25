@@ -3,7 +3,7 @@ package deob;
 import org.tbot.methods.Settings;
 import org.tbot.util.Condition;
 
-final class IsNotMakingBreadCondition implements Condition {
+public final class IsNotMakingBreadCondition implements Condition {
 
     private static final int S_MAKE_BREAD = 160;
 

@@ -3,7 +3,7 @@ package deob;
 import org.tbot.methods.Players;
 import org.tbot.util.Condition;
 
-final class LocalNotPerformingAnimationCondition implements Condition {
+public final class LocalNotPerformingAnimationCondition implements Condition {
 
     @Override
     public boolean check() {

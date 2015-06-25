@@ -3,10 +3,15 @@ package deob;
 import org.tbot.util.Condition;
 import org.tbot.wrappers.WidgetChild;
 
-class IsWidgetNotOpenCondition implements Condition {
+public final class IsWidgetNotOpenCondition implements Condition {
 
-    final TutorialScript script;
-    final WidgetChild widget;
+    private final TutorialScript script;
+    private final WidgetChild widget;
+
+    public IsWidgetNotOpenCondition(TutorialScript script, WidgetChild widgetChild) {
+        this.script = script;
+        this.widget = widgetChild;
+    }
 
     @Override
     public boolean check() {
@@ -14,11 +19,6 @@ class IsWidgetNotOpenCondition implements Condition {
             return true;
         }
         return false;
-    }
-
-    IsWidgetNotOpenCondition(TutorialScript script, WidgetChild widgetChild) {
-        this.script = script;
-        this.widget = widgetChild;
     }
 
 }

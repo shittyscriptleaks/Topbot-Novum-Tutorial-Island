@@ -6,7 +6,9 @@ import org.tbot.methods.Time;
 import org.tbot.methods.Widgets;
 import org.tbot.wrappers.Tile;
 
-public class RunescapeGuideStep {
+public final class RunescapeGuideStep {
+
+    private RunescapeGuideStep() { }
 
     private static final Tile ENTRANCE_TILE = new Tile(3094, 3107, 0);
 

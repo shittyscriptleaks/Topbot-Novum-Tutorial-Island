@@ -3,9 +3,13 @@ package deob;
 import org.tbot.methods.Widgets;
 import org.tbot.util.Condition;
 
-class HasNoClosableWidgetCondition implements Condition {
+public final class HasNoClosableWidgetCondition implements Condition {
 
-    final TutorialScript script;
+    private final TutorialScript script;
+
+    public HasNoClosableWidgetCondition(TutorialScript script) {
+        this.script = script;
+    }
 
     @Override
     public boolean check() {
@@ -13,10 +17,6 @@ class HasNoClosableWidgetCondition implements Condition {
             return true;
         }
         return false;
-    }
-
-    HasNoClosableWidgetCondition(TutorialScript script) {
-        this.script = script;
     }
 
 }

@@ -3,7 +3,7 @@ package deob;
 import org.tbot.methods.Settings;
 import org.tbot.util.Condition;
 
-final class IsNotMakingBarCondition  implements Condition {
+public final class IsNotMakingBarCondition  implements Condition {
 
     private static final int S_MAKE_BAR = 320;
 

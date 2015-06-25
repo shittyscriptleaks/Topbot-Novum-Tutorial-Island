@@ -10,7 +10,7 @@ import org.tbot.wrappers.WidgetChild;
 
 import java.awt.*;
 
-public class TutorialScript extends AbstractScript implements PaintListener {
+public final class TutorialScript extends AbstractScript implements PaintListener {
 
     public TutorialScript() {
         TBot.getBot().getScriptHandler().getEventManager().addListener(this);
