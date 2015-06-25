@@ -30,8 +30,12 @@ public final class CombatInstructorStep {
     private static final int S_DEAD_RAT_TALK_TO_INSTRUCTOR = 470;
     private static final int S_EQUIP_RANGED = 480;
 
-    private static void killRat(boolean canBeFarAway) {
-        Util.walkToAndInteract(Npcs.getNearest(new RatNPCFilter()), "Attack", new LocalPlayerHasNoInteractingEntityCondition(), 3000, !canBeFarAway);
+    public static boolean hasProgressedPast() {
+        if (Settings.get(281) > 490) {
+            return true;
+        }
+
+        return false;
     }
 
     public static void handle() {
@@ -73,6 +77,12 @@ public final class CombatInstructorStep {
         }
     }
 
+    private static void talk() {
+        if (Util.walkToLocatable(ENTRACE_TILE, 4)) {
+            Util.walkToAndInteract(Npcs.getNearest("Combat Instructor"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
+        }
+    }
+
     public static boolean checkEquip(String... itemNames) {
         int n;
         int len = itemNames.length;
@@ -90,18 +100,8 @@ public final class CombatInstructorStep {
         return true;
     }
 
-    public static boolean hasProgressedPast() {
-        if (Settings.get(281) > 490) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private static void talk() {
-        if (Util.walkToLocatable(ENTRACE_TILE, 4)) {
-            Util.walkToAndInteract(Npcs.getNearest("Combat Instructor"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
-        }
+    private static void killRat(boolean canBeFarAway) {
+        Util.walkToAndInteract(Npcs.getNearest(new RatNPCFilter()), "Attack", new LocalPlayerHasNoInteractingEntityCondition(), 3000, !canBeFarAway);
     }
 
 }

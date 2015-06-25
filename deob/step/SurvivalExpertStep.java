@@ -1,7 +1,6 @@
 package deob.step;
 
 import deob.util.Util;
-import deob.util.WebUtil;
 import deob.condition.IsNotMakingAFireCondition;
 import deob.condition.IsProgressSettingNotEqual;
 import deob.condition.LocalNotPerformingAnimationCondition;
@@ -16,7 +15,9 @@ import org.tbot.wrappers.GameObject;
 import org.tbot.wrappers.Tile;
 import org.tbot.wrappers.WidgetChild;
 
-public class SurvivalExpertStep {
+public final class SurvivalExpertStep {
+
+    private SurvivalExpertStep() { }
 
     private static final Tile ENTRANCE_TILE = new Tile(3102, 3096);
 
@@ -30,54 +31,6 @@ public class SurvivalExpertStep {
     private static final int S_COOK_SHRIMP = 90;
     private static final int S_BURNT_FISH_SHRIMP = 100;
     private static final int S_COOK_SHRIM_AGAIN = 110;
-
-    private static void chopTree() {
-        if (Players.getLocal().getAnimation() == -1) {
-            Util.walkToAndInteract(GameObjects.getNearest("Tree"), "Chop down", new LocalNotPerformingAnimationCondition(), 3000);
-        }
-    }
-
-    private static void attemptLightFire() {
-        if (Inventory.contains("Logs")) {
-            if (Players.getLocal().getAnimation() == -1) {
-                GameObject gameObject = GameObjects.getNearest("Fire");
-                if (gameObject != null && gameObject.getLocation().distance() == 0) {
-                    Util.walkToLocatable(Players.getLocal().getLocation().getRandomized(3), 0);
-                    return;
-                }
-
-                if (Inventory.useItemOn("Tinderbox", "Logs")) {
-                    Time.sleepUntil(new IsNotMakingAFireCondition(), 8000);
-                }
-            }
-        } else {
-            SurvivalExpertStep.chopTree();
-        }
-    }
-
-    private static void cookShrimp(int setting) {
-        GameObject gameObject = GameObjects.getNearest("Fire");
-        if (gameObject == null) {
-            SurvivalExpertStep.attemptLightFire();
-            return;
-        }
-
-        if (Inventory.contains("Raw shrimps")) {
-            if (Inventory.useItemOn("Raw shrimps", gameObject)) {
-                Time.sleepUntil(new IsProgressSettingNotEqual(setting), 6000);
-            }
-        } else {
-            SurvivalExpertStep.fish();
-        }
-    }
-
-    public static boolean hasProgressedPast() {
-        if (Settings.get(281) > 110) {
-            return true;
-        }
-
-        return false;
-    }
 
     private static void f() {
         if (Widgets.isOpen(11) || Widgets.openTab(11)) {
@@ -105,10 +58,12 @@ public class SurvivalExpertStep {
         }
     }
 
-    private static void talk() {
-        if (Util.walkToLocatable(ENTRANCE_TILE, 5)) {
-            Util.walkToAndInteract(Npcs.getNearest("Survival Expert"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
+    public static boolean hasProgressedPast() {
+        if (Settings.get(281) > 110) {
+            return true;
         }
+
+        return false;
     }
 
     public static void handle() {
@@ -146,9 +101,55 @@ public class SurvivalExpertStep {
         }
     }
 
+    private static void talk() {
+        if (Util.walkToLocatable(ENTRANCE_TILE, 5)) {
+            Util.walkToAndInteract(Npcs.getNearest("Survival Expert"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
+        }
+    }
+
+    private static void chopTree() {
+        if (Players.getLocal().getAnimation() == -1) {
+            Util.walkToAndInteract(GameObjects.getNearest("Tree"), "Chop down", new LocalNotPerformingAnimationCondition(), 3000);
+        }
+    }
+
+    private static void attemptLightFire() {
+        if (Inventory.contains("Logs")) {
+            if (Players.getLocal().getAnimation() == -1) {
+                GameObject gameObject = GameObjects.getNearest("Fire");
+                if (gameObject != null && gameObject.getLocation().distance() == 0) {
+                    Util.walkToLocatable(Players.getLocal().getLocation().getRandomized(3), 0);
+                    return;
+                }
+
+                if (Inventory.useItemOn("Tinderbox", "Logs")) {
+                    Time.sleepUntil(new IsNotMakingAFireCondition(), 8000);
+                }
+            }
+        } else {
+            SurvivalExpertStep.chopTree();
+        }
+    }
+
     private static void fish() {
         if (Players.getLocal().getAnimation() == -1) {
             Util.walkToAndInteract(Npcs.getNearest("Fishing spot"), "Net", new LocalNotPerformingAnimationCondition(), 3000, false);
+        }
+    }
+
+    private static void cookShrimp(int setting) {
+        GameObject gameObject = GameObjects.getNearest("Fire");
+        if (gameObject == null) {
+            SurvivalExpertStep.attemptLightFire();
+            return;
+        }
+
+        if (Inventory.contains("Raw shrimps")) {
+            if (Inventory.useItemOn("Raw shrimps", gameObject)) {
+                Time.sleepUntil(new IsProgressSettingNotEqual(setting), 6000);
+            }
+        } else {
+            SurvivalExpertStep.fish();
         }
     }
 

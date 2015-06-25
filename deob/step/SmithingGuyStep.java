@@ -33,8 +33,12 @@ public final class SmithingGuyStep {
 
     private static final int S_USE_BAR_ON_ANVIL = 340;
 
-    private static void useBarOnAnvil() {
-        Util.walkToAndInteract(GameObjects.getNearest("Anvil"), "Smith", new IsNotUsingBarOnAnvilCondition(), 5000);
+    public static boolean hasProgressedPast() {
+        if (Settings.get(281) > 350) {
+            return true;
+        }
+
+        return false;
     }
 
     public static void handle() {
@@ -87,10 +91,9 @@ public final class SmithingGuyStep {
         }
     }
 
-    private static void smeltBar() {
-        if (Util.walkToLocatable(new Tile(3079, 9497), 0)) {
-            GameObject gameObject = GameObjects.getNearest("Furnace");
-            Util.walkToAndInteract(gameObject, new UseTinOreOnObjectCondition(gameObject), new IsNotMakingBarCondition(), 4000);
+    private static void talk() {
+        if (Util.walkToLocatable(ENTRANCE_TILE, 10)) {
+            Util.walkToAndInteract(Npcs.getNearest("Mining Instructor"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 
@@ -98,24 +101,21 @@ public final class SmithingGuyStep {
         Util.walkToAndInteract(GameObjects.getTopAt(tile), "Prospect", new IsProgressSettingNotEqual(setting), 5000);
     }
 
-    public static boolean hasProgressedPast() {
-        if (Settings.get(281) > 350) {
-            return true;
-        }
-
-        return false;
-    }
-
-    private static void talk() {
-        if (Util.walkToLocatable(ENTRANCE_TILE, 10)) {
-            Util.walkToAndInteract(Npcs.getNearest("Mining Instructor"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
-        }
-    }
-
     private static void mineOre(Tile tile, int setting) {
         if (Players.getLocal().getAnimation() == -1) {
             Util.walkToAndInteract(GameObjects.getTopAt(tile), "Mine", new LocalNotPerformingAnimationCondition(), 3000);
         }
+    }
+
+    private static void smeltBar() {
+        if (Util.walkToLocatable(new Tile(3079, 9497), 0)) {
+            GameObject gameObject = GameObjects.getNearest("Furnace");
+            Util.walkToAndInteract(gameObject, new UseTinOreOnObjectCondition(gameObject), new IsNotMakingBarCondition(), 4000);
+        }
+    }
+
+    private static void useBarOnAnvil() {
+        Util.walkToAndInteract(GameObjects.getNearest("Anvil"), "Smith", new IsNotUsingBarOnAnvilCondition(), 5000);
     }
 
 }

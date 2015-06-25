@@ -11,7 +11,9 @@ import org.tbot.methods.Widgets;
 import org.tbot.methods.tabs.Inventory;
 import org.tbot.wrappers.Tile;
 
-public class CookingGuyStep {
+public final class CookingGuyStep {
+
+    private CookingGuyStep() { }
 
     private static final Tile ENTRANCE_TILE = new Tile(3075, 3084);
 
@@ -48,6 +50,12 @@ public class CookingGuyStep {
         }
     }
 
+    private static void talk() {
+        if (Util.walkToLocatable(ENTRANCE_TILE, 3)) {
+            Util.walkToAndInteract(Npcs.getNearest("Master Chef"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
+        }
+    }
+
     private static void combineIngrediants() {
         if (Inventory.getFirst("Pot of flour") == null) {
             CookingGuyStep.talk();
@@ -75,10 +83,5 @@ public class CookingGuyStep {
         }
     }
 
-    private static void talk() {
-        if (Util.walkToLocatable(ENTRANCE_TILE, 3)) {
-            Util.walkToAndInteract(Npcs.getNearest("Master Chef"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
-        }
-    }
 }
 

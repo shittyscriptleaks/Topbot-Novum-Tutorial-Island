@@ -5,7 +5,9 @@ import org.tbot.methods.GameObjects;
 import org.tbot.methods.Settings;
 import org.tbot.wrappers.Tile;
 
-public class BankAndPollStep {
+public final class BankAndPollStep {
+
+    private BankAndPollStep() { }
 
     private static final Tile ENTRANCE_TILE = new Tile(3121, 3121);
 

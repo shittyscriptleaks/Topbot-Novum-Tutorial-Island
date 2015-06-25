@@ -20,6 +20,14 @@ public final class BrotherBraceStep {
     private static final int S_OPEN_IGNORE_LIST = 590;
     private static final int S_SOCIAL_OPEN_TALK_TO_BROTHER = 600;
 
+    public static boolean hasProgressedPast() {
+        if (Settings.get(281) > 600) {
+            return true;
+        }
+
+        return false;
+    }
+
     public static void handle() {
         if (Settings.get(281) == S_CONTINUE_THROUGH_DOOR ||
                 Settings.get(281) == S_TALK_TO_BROTHER ||
@@ -46,14 +54,6 @@ public final class BrotherBraceStep {
                 Util.walkToAndInteract(Npcs.getNearest("Brother Brace"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
             }
         }
-    }
-
-    public static boolean hasProgressedPast() {
-        if (Settings.get(281) > 600) {
-            return true;
-        }
-
-        return false;
     }
 
 }

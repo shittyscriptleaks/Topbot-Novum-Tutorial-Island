@@ -27,6 +27,14 @@ public final class QuestGuyStep {
     private static final int S_OPEN_QUEST_TAB = 230;
     private static final int S_QUEST_TAB_OPEN_TALK_TO_QUEST_GUY = 240;
 
+    public static boolean hasProgressedPast() {
+        if (Settings.get(281) > 240) {
+            return true;
+        }
+
+        return false;
+    }
+
     public static void handle() {
         if (Settings.get(281) == S_OPEN_EMOTE_TAB) {
             Widgets.openTab(12);
@@ -56,14 +64,6 @@ public final class QuestGuyStep {
         if (Settings.get(281) == S_OPEN_QUEST_TAB) {
             Widgets.openTab(2);
         }
-    }
-
-    public static boolean hasProgressedPast() {
-        if (Settings.get(281) > 240) {
-            return true;
-        }
-
-        return false;
     }
 
     private static void talk() {

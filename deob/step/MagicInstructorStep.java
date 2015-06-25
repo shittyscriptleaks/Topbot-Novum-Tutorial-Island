@@ -23,12 +23,6 @@ public final class MagicInstructorStep {
     private static final int S_WIND_STRIKE_CHICKEN = 650;
     private static final int S_LEAVE_TALK_TO_MAGIC_INSTRUCTOR = 670;
 
-    private static void talk() {
-        if (Util.walkToLocatable(ENTRANCE_TILE, 7)) {
-            Util.walkToAndInteract(Npcs.getNearest("Magic Instructor"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
-        }
-    }
-
     public static boolean hasProgressedPast() {
         if (Settings.get(281) >= 1000) {
             return true;
@@ -54,5 +48,12 @@ public final class MagicInstructorStep {
             Util.walkToAndInteract(Npcs.getNearest(new ChickenNPCFilter()), "Cast", new IsNotCastingWindStrikeCondition(), 4000);
         }
     }
+
+    private static void talk() {
+        if (Util.walkToLocatable(ENTRANCE_TILE, 7)) {
+            Util.walkToAndInteract(Npcs.getNearest("Magic Instructor"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
+        }
+    }
+
 }
 

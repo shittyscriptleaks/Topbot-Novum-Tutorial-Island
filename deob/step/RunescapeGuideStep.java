@@ -23,6 +23,32 @@ public final class RunescapeGuideStep {
     private static final int S_SETTINGS_OPEN_TALK_TO_GUIDE = 7;
     private static final int S_LEAVE_THROUGH_DOOR = 10;
 
+    public static boolean hasProgressedPast() {
+        if (Settings.get(281) > 10) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static void handle() {
+        if (RunescapeGuideStep.handleMakeoverInterface()) {
+            return;
+        }
+
+        if (Settings.get(281) == S_INITIAL_TALK_TO_GUIDE || Settings.get(281) == S_SETTINGS_OPEN_TALK_TO_GUIDE) {
+            RunescapeGuideStep.talk();
+        }
+
+        if (Settings.get(281) == S_OPEN_SETTINGS) {
+            Widgets.openTab(11);
+        }
+
+        if (Settings.get(281) == S_LEAVE_THROUGH_DOOR) {
+            Util.walkToLocatable(new Tile(3102, 3096), 4);
+        }
+    }
+
     private static void randomizeAppearance(int... widgetIds) {
         int n;
         int n2 = widgetIds.length;
@@ -61,31 +87,5 @@ public final class RunescapeGuideStep {
         }
     }
 
-    public static boolean hasProgressedPast() {
-        if (Settings.get(281) > 10) {
-            return true;
-        }
-
-        return false;
-    }
-
-    public static void handle() {
-        if (RunescapeGuideStep.handleMakeoverInterface()) {
-            return;
-        }
-
-        if (Settings.get(281) == S_INITIAL_TALK_TO_GUIDE || Settings.get(281) == S_SETTINGS_OPEN_TALK_TO_GUIDE) {
-            RunescapeGuideStep.talk();
-        }
-
-        if (Settings.get(281) == S_OPEN_SETTINGS) {
-            Widgets.openTab(11);
-        }
-
-        if (Settings.get(281) == S_LEAVE_THROUGH_DOOR) {
-            Util.walkToLocatable(new Tile(3102, 3096), 4);
-        }
-
-    }
 }
 
