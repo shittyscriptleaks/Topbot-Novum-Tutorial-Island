@@ -71,7 +71,7 @@ public final class InteractionUtil {
                     Walking.walkTileMM(locatable.getLocation());
                 }
             } else {
-                LogHandler.log(new StringBuilder().insert(0, "Cannot walk to: ").append(locatable.getLocation()).toString());
+                LogHandler.log("Cannot walk to: " + locatable.getLocation().toString());
             }
         }
         return false;
