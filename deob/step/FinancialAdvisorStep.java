@@ -1,5 +1,6 @@
 package deob.step;
 
+import deob.Constants;
 import deob.util.InteractionUtil;
 import org.tbot.methods.Npcs;
 import org.tbot.methods.Settings;
@@ -16,7 +17,7 @@ public final class FinancialAdvisorStep {
     private static final Tile ENTRANCE_TILE = new Tile(3127, 3124);
 
     public static void handle() {
-        if (Settings.get(281) > 520) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) > 520) {
             WidgetChild widgetChild = Widgets.getWidget(345, 0);
             if (widgetChild != null && widgetChild.isVisible()) {
                 Time.sleep(600, 1200);
@@ -29,12 +30,12 @@ public final class FinancialAdvisorStep {
     }
 
     public static boolean hasProgressedPast() {
-        return Settings.get(281) > 530;
+        return Settings.get(Constants.PROGRESS_SETTING_ID) > 530;
     }
 
     private static void talk() {
         if (InteractionUtil.walkToLocatable(ENTRANCE_TILE, 2)) {
-            InteractionUtil.walkToAndInteract(Npcs.getNearest("Financial Advisor"), "Talk-to", InteractionUtil.CAN_CONTINUE_DIALOG_COND, 3000);
+            InteractionUtil.walkToAndInteract(Npcs.getNearest("Financial Advisor"), "Talk-to", Constants.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 

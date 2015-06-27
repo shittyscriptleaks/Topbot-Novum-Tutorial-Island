@@ -1,5 +1,6 @@
 package deob.step;
 
+import deob.Constants;
 import deob.util.InteractionUtil;
 import org.tbot.methods.*;
 import org.tbot.methods.tabs.Inventory;
@@ -51,12 +52,12 @@ public final class SurvivalExpertStep {
     }
 
     public static boolean hasProgressedPast() {
-        return Settings.get(281) > 110;
+        return Settings.get(Constants.PROGRESS_SETTING_ID) > 110;
 
     }
 
     public static void handle() {
-        if (Settings.get(281) == S_TALK_TO_EXPERT || Settings.get(281) == S_SKILLS_OPEN_TALK_TO_EXPERT) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_TALK_TO_EXPERT || Settings.get(Constants.PROGRESS_SETTING_ID) == S_SKILLS_OPEN_TALK_TO_EXPERT) {
             if (Settings.get(168) != 4 || Settings.get(169) != 4 || Settings.get(872) != 4) {
                 SurvivalExpertStep.f();
                 return;
@@ -65,34 +66,34 @@ public final class SurvivalExpertStep {
             SurvivalExpertStep.talk();
         }
 
-        if (Settings.get(281) == S_OPEN_INVENTORY) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_INVENTORY) {
             Widgets.openTab(3);
         }
 
-        if (Settings.get(281) == S_CHOP_TREE) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_CHOP_TREE) {
             SurvivalExpertStep.chopTree();
         }
 
-        if (Settings.get(281) == S_LIGHT_FIRE) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_LIGHT_FIRE) {
             SurvivalExpertStep.attemptLightFire();
         }
 
-        if (Settings.get(281) == S_OPEN_SKILLS) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_SKILLS) {
             Widgets.openTab(1);
         }
 
-        if (Settings.get(281) == S_FISH_SHRIMP) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_FISH_SHRIMP) {
             SurvivalExpertStep.fish();
         }
 
-        if (Settings.get(281) == S_COOK_SHRIMP || Settings.get(281) == S_BURNT_FISH_SHRIMP || Settings.get(281) == S_COOK_SHRIM_AGAIN) {
-            SurvivalExpertStep.cookShrimp(Settings.get(281));
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_COOK_SHRIMP || Settings.get(Constants.PROGRESS_SETTING_ID) == S_BURNT_FISH_SHRIMP || Settings.get(Constants.PROGRESS_SETTING_ID) == S_COOK_SHRIM_AGAIN) {
+            SurvivalExpertStep.cookShrimp(Settings.get(Constants.PROGRESS_SETTING_ID));
         }
     }
 
     private static void talk() {
         if (InteractionUtil.walkToLocatable(ENTRANCE_TILE, 5)) {
-            InteractionUtil.walkToAndInteract(Npcs.getNearest("Survival Expert"), "Talk-to", InteractionUtil.CAN_CONTINUE_DIALOG_COND, 3000);
+            InteractionUtil.walkToAndInteract(Npcs.getNearest("Survival Expert"), "Talk-to", Constants.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 
@@ -112,7 +113,7 @@ public final class SurvivalExpertStep {
                 }
 
                 if (Inventory.useItemOn("Tinderbox", "Logs")) {
-                    Time.sleepUntil(() -> Settings.get(281) != S_LIGHT_FIRE, 8000);
+                    Time.sleepUntil(() -> Settings.get(Constants.PROGRESS_SETTING_ID) != S_LIGHT_FIRE, 8000);
                 }
             }
         } else {
@@ -135,7 +136,7 @@ public final class SurvivalExpertStep {
 
         if (Inventory.contains("Raw shrimps")) {
             if (Inventory.useItemOn("Raw shrimps", gameObject)) {
-                Time.sleepUntil(() -> Settings.get(281) != setting, 6000);
+                Time.sleepUntil(() -> Settings.get(Constants.PROGRESS_SETTING_ID) != setting, 6000);
             }
         } else {
             SurvivalExpertStep.fish();

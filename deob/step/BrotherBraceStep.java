@@ -1,5 +1,6 @@
 package deob.step;
 
+import deob.Constants;
 import deob.util.InteractionUtil;
 import org.tbot.methods.Npcs;
 import org.tbot.methods.Settings;
@@ -21,33 +22,35 @@ public final class BrotherBraceStep {
     private static final int S_SOCIAL_OPEN_TALK_TO_BROTHER = 600;
 
     public static boolean hasProgressedPast() {
-        return Settings.get(281) > 600;
+        return Settings.get(Constants.PROGRESS_SETTING_ID) > 600;
 
     }
 
     public static void handle() {
-        if (Settings.get(281) == S_CONTINUE_THROUGH_DOOR ||
-                Settings.get(281) == S_TALK_TO_BROTHER ||
-                Settings.get(281) == S_PRAYER_OPEN_TALK_TO_BROTHER ||
-                Settings.get(281) == S_SOCIAL_OPEN_TALK_TO_BROTHER) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_CONTINUE_THROUGH_DOOR ||
+                Settings.get(Constants.PROGRESS_SETTING_ID) == S_TALK_TO_BROTHER ||
+                Settings.get(Constants.PROGRESS_SETTING_ID) == S_PRAYER_OPEN_TALK_TO_BROTHER ||
+                Settings.get(Constants.PROGRESS_SETTING_ID) == S_SOCIAL_OPEN_TALK_TO_BROTHER) {
 
             BrotherBraceStep.talkToBrother();
         }
 
-        if (Settings.get(281) == S_OPEN_PRAYER_TAB) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_PRAYER_TAB) {
             Widgets.openTab(5);
         }
-        if (Settings.get(281) == S_OPEN_FRIENDS_LIST) {
+
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_FRIENDS_LIST) {
             Widgets.openTab(8);
         }
-        if (Settings.get(281) == S_OPEN_IGNORE_LIST) {
+
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_IGNORE_LIST) {
             Widgets.openTab(9);
         }
     }
 
     private static void talkToBrother() {
         if (InteractionUtil.walkToLocatable(ENTRACE_TILE, 7)) {
-            InteractionUtil.walkToAndInteract(Npcs.getNearest("Brother Brace"), "Talk-to", InteractionUtil.CAN_CONTINUE_DIALOG_COND, 3000);
+            InteractionUtil.walkToAndInteract(Npcs.getNearest("Brother Brace"), "Talk-to", Constants.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 

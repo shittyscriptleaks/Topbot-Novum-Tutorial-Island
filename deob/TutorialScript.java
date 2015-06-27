@@ -82,7 +82,7 @@ public final class TutorialScript extends AbstractScript implements PaintListene
                 BankAndPollStep.handle();
             }
 
-            if (Settings.get(281) >= 1000 && Game.logout()) {
+            if (Settings.get(Constants.PROGRESS_SETTING_ID) >= 1000 && Game.logout()) {
                 TBot.getBot().getScriptHandler().stopScript();
             }
         }
@@ -142,7 +142,7 @@ public final class TutorialScript extends AbstractScript implements PaintListene
 
     @Override
     public void onRepaint(Graphics graphics) {
-        graphics.drawString("" + Settings.get(281), 20, 120);
+        graphics.drawString("" + Settings.get(Constants.PROGRESS_SETTING_ID), 20, 120);
     }
 
 }

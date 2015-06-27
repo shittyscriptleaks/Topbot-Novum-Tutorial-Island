@@ -15,7 +15,6 @@ public final class InteractionUtil {
     private InteractionUtil() { }
 
     private static int toggleRunThreshold = 40;
-    public static final Condition CAN_CONTINUE_DIALOG_COND = Widgets::canContinue;
 
     public static void walkToAndInteract(Locatable locatable, Condition condition, Condition condition2, int breakTime) {
         InteractionUtil.walkToAndInteract(locatable, condition, condition2, breakTime, !(locatable instanceof GameObject));

@@ -1,5 +1,6 @@
 package deob.step;
 
+import deob.Constants;
 import deob.util.InteractionUtil;
 import org.tbot.methods.Npcs;
 import org.tbot.methods.Settings;
@@ -22,15 +23,15 @@ public final class MagicInstructorStep {
     private static final int S_LEAVE_TALK_TO_MAGIC_INSTRUCTOR = 670;
 
     public static boolean hasProgressedPast() {
-        return Settings.get(281) >= 1000;
+        return Settings.get(Constants.PROGRESS_SETTING_ID) >= 1000;
 
     }
 
     public static void handle() {
-        if (Settings.get(281) == S_LEAVE_MONESTRY ||
-                Settings.get(281) == S_TALK_TO_MAGIC_INSTRUCTOR ||
-                Settings.get(281) == S_MAGIC_TAB_OPEN_TALK_TO_MAGIC_INSTRUCTOR ||
-                Settings.get(281) == S_LEAVE_TALK_TO_MAGIC_INSTRUCTOR) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_LEAVE_MONESTRY ||
+                Settings.get(Constants.PROGRESS_SETTING_ID) == S_TALK_TO_MAGIC_INSTRUCTOR ||
+                Settings.get(Constants.PROGRESS_SETTING_ID) == S_MAGIC_TAB_OPEN_TALK_TO_MAGIC_INSTRUCTOR ||
+                Settings.get(Constants.PROGRESS_SETTING_ID) == S_LEAVE_TALK_TO_MAGIC_INSTRUCTOR) {
 
             if (Magic.hasSpellSelected()) {
                 Magic.deselectSpell();
@@ -39,23 +40,23 @@ public final class MagicInstructorStep {
             MagicInstructorStep.talk();
         }
 
-        if (Settings.get(281) == S_OPEN_MAGIC_TAB) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_MAGIC_TAB) {
             Widgets.openTab(6);
         }
 
-        if (Settings.get(281) == S_WIND_STRIKE_CHICKEN &&
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_WIND_STRIKE_CHICKEN &&
                 InteractionUtil.walkToLocatable(new Tile(3140, 3090), 0) &&
                 (Magic.getSelectedSpell() == SpellBooks.Modern.WIND_STRIKE ||
                         Magic.cast(SpellBooks.Modern.WIND_STRIKE))) {
 
             InteractionUtil.walkToAndInteract(Npcs.getNearest((n) -> n.getInteractingEntity() == null && n.getName().equals("Chicken")),
-                    "Cast", () -> Settings.get(281) != S_WIND_STRIKE_CHICKEN, 4000);
+                    "Cast", () -> Settings.get(Constants.PROGRESS_SETTING_ID) != S_WIND_STRIKE_CHICKEN, 4000);
         }
     }
 
     private static void talk() {
         if (InteractionUtil.walkToLocatable(ENTRANCE_TILE, 7)) {
-            InteractionUtil.walkToAndInteract(Npcs.getNearest("Magic Instructor"), "Talk-to", InteractionUtil.CAN_CONTINUE_DIALOG_COND, 3000);
+            InteractionUtil.walkToAndInteract(Npcs.getNearest("Magic Instructor"), "Talk-to", Constants.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 

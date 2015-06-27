@@ -1,5 +1,6 @@
 package deob.step;
 
+import deob.Constants;
 import deob.util.InteractionUtil;
 import org.tbot.methods.*;
 import org.tbot.methods.tabs.Emotes;
@@ -23,44 +24,44 @@ public final class QuestGuyStep {
     private static final int S_QUEST_TAB_OPEN_TALK_TO_QUEST_GUY = 240;
 
     public static boolean hasProgressedPast() {
-        return Settings.get(281) > 240;
+        return Settings.get(Constants.PROGRESS_SETTING_ID) > 240;
 
     }
 
     public static void handle() {
-        if (Settings.get(281) == S_OPEN_EMOTE_TAB) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_EMOTE_TAB) {
             Widgets.openTab(12);
         }
 
-        if (Settings.get(281) == S_DO_EMOTE && Players.getLocal().getAnimation() == -1 && Emotes.doEmote(Emotes.Emote.DANCE)) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_DO_EMOTE && Players.getLocal().getAnimation() == -1 && Emotes.doEmote(Emotes.Emote.DANCE)) {
             Time.sleepUntil(() -> Players.getLocal().getAnimation() != -1);
         }
 
-        if (Settings.get(281) == S_OPEN_SETTINGS) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_SETTINGS) {
             Widgets.openTab(11);
         }
 
-        if (Settings.get(281) == S_ENABLE_RUN) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_ENABLE_RUN) {
             Time.sleep(600, 1200);
             Walking.setRun(!Walking.isRunEnabled());
         }
 
-        if (Settings.get(281) == S_LEAVE_COOK_BUILDING ||
-                Settings.get(281) == S_OPEN_QUEST_DOOR ||
-                Settings.get(281) == S_TALK_TO_QUEST_GUY ||
-                Settings.get(281) == S_QUEST_TAB_OPEN_TALK_TO_QUEST_GUY) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_LEAVE_COOK_BUILDING ||
+                Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_QUEST_DOOR ||
+                Settings.get(Constants.PROGRESS_SETTING_ID) == S_TALK_TO_QUEST_GUY ||
+                Settings.get(Constants.PROGRESS_SETTING_ID) == S_QUEST_TAB_OPEN_TALK_TO_QUEST_GUY) {
 
             QuestGuyStep.talk();
         }
 
-        if (Settings.get(281) == S_OPEN_QUEST_TAB) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_QUEST_TAB) {
             Widgets.openTab(2);
         }
     }
 
     private static void talk() {
         if (InteractionUtil.walkToLocatable(ENTRACE_TILE, 3)) {
-            InteractionUtil.walkToAndInteract(Npcs.getNearest("Quest Guide"), "Talk-to", InteractionUtil.CAN_CONTINUE_DIALOG_COND, 3000);
+            InteractionUtil.walkToAndInteract(Npcs.getNearest("Quest Guide"), "Talk-to", Constants.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 

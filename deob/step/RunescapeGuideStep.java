@@ -1,5 +1,6 @@
 package deob.step;
 
+import deob.Constants;
 import deob.util.InteractionUtil;
 import org.tbot.methods.Npcs;
 import org.tbot.methods.Settings;
@@ -25,7 +26,7 @@ public final class RunescapeGuideStep {
     private static final int WIDGET_ROOT_MAKEOVER_MAGE = 269;
 
     public static boolean hasProgressedPast() {
-        return Settings.get(281) > 10;
+        return Settings.get(Constants.PROGRESS_SETTING_ID) > 10;
 
     }
 
@@ -34,15 +35,15 @@ public final class RunescapeGuideStep {
             return;
         }
 
-        if (Settings.get(281) == S_INITIAL_TALK_TO_GUIDE || Settings.get(281) == S_SETTINGS_OPEN_TALK_TO_GUIDE) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_INITIAL_TALK_TO_GUIDE || Settings.get(Constants.PROGRESS_SETTING_ID) == S_SETTINGS_OPEN_TALK_TO_GUIDE) {
             RunescapeGuideStep.talk();
         }
 
-        if (Settings.get(281) == S_OPEN_SETTINGS) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_SETTINGS) {
             Widgets.openTab(11);
         }
 
-        if (Settings.get(281) == S_LEAVE_THROUGH_DOOR) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_LEAVE_THROUGH_DOOR) {
             InteractionUtil.walkToLocatable(new Tile(3102, 3096), 4);
         }
     }
@@ -74,7 +75,7 @@ public final class RunescapeGuideStep {
 
     private static void talk() {
         if (InteractionUtil.walkToLocatable(ENTRANCE_TILE, 5)) {
-            InteractionUtil.walkToAndInteract(Npcs.getNearest("Runescape Guide"), "Talk-to", InteractionUtil.CAN_CONTINUE_DIALOG_COND, 3000);
+            InteractionUtil.walkToAndInteract(Npcs.getNearest("Runescape Guide"), "Talk-to", Constants.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 

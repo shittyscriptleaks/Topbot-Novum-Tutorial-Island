@@ -1,5 +1,6 @@
 package deob.step;
 
+import deob.Constants;
 import deob.util.InteractionUtil;
 import org.tbot.methods.*;
 import org.tbot.methods.tabs.Equipment;
@@ -28,52 +29,52 @@ public final class CombatInstructorStep {
     private static final int S_EQUIP_RANGED = 480;
 
     public static boolean hasProgressedPast() {
-        return Settings.get(281) > 490;
+        return Settings.get(Constants.PROGRESS_SETTING_ID) > 490;
 
     }
 
     public static void handle() {
         WidgetChild widgetChild;
-        if (Settings.get(281) == S_WALK_THROUGH_GATE ||
-                Settings.get(281) == S_TALK_TO_INSTRUCTOR ||
-                Settings.get(281) == S_EQUIPPED_TALK_TO_INSTRUCTOR ||
-                Settings.get(281) == S_DEAD_RAT_TALK_TO_INSTRUCTOR) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_WALK_THROUGH_GATE ||
+                Settings.get(Constants.PROGRESS_SETTING_ID) == S_TALK_TO_INSTRUCTOR ||
+                Settings.get(Constants.PROGRESS_SETTING_ID) == S_EQUIPPED_TALK_TO_INSTRUCTOR ||
+                Settings.get(Constants.PROGRESS_SETTING_ID) == S_DEAD_RAT_TALK_TO_INSTRUCTOR) {
 
             CombatInstructorStep.talk();
         }
 
-        if (Settings.get(281) == S_OPEN_EQUIP_TAB) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_EQUIP_TAB) {
             Widgets.openTab(4);
         }
 
-        if (Settings.get(281) == S_VIEW_WORN_EQUIPMENT && (Equipment.isOpen() || Equipment.openTab()) && (widgetChild = Widgets.getWidget(387, 17)) != null && widgetChild.isVisible() && widgetChild.click()) {
-            Time.sleepUntil(() -> Settings.get(281) != S_VIEW_WORN_EQUIPMENT, 2000);
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_VIEW_WORN_EQUIPMENT && (Equipment.isOpen() || Equipment.openTab()) && (widgetChild = Widgets.getWidget(387, 17)) != null && widgetChild.isVisible() && widgetChild.click()) {
+            Time.sleepUntil(() -> Settings.get(Constants.PROGRESS_SETTING_ID) != S_VIEW_WORN_EQUIPMENT, 2000);
         }
 
-        if (Settings.get(281) == S_WIELD_DAGGER) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_WIELD_DAGGER) {
             CombatInstructorStep.checkEquip("Bronze dagger");
         }
 
-        if (Settings.get(281) == S_EQUIP_SWORD_AND_SHIELD) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_EQUIP_SWORD_AND_SHIELD) {
             CombatInstructorStep.checkEquip("Bronze sword", "Wooden shield");
         }
 
-        if (Settings.get(281) == S_OPEN_COMBAT_OPTIONS) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_COMBAT_OPTIONS) {
             Widgets.openTab(0);
         }
 
-        if ((Settings.get(281) == S_ENTER_RAT_AREA || Settings.get(281) == S_KILL_RAT_WITH_MELEE || Settings.get(281) == S_IN_RAT_COMBAT) && InteractionUtil.walkToLocatable(new Tile(3107, 9519), 3) && Players.getLocal().getInteractingEntity() == null) {
+        if ((Settings.get(Constants.PROGRESS_SETTING_ID) == S_ENTER_RAT_AREA || Settings.get(Constants.PROGRESS_SETTING_ID) == S_KILL_RAT_WITH_MELEE || Settings.get(Constants.PROGRESS_SETTING_ID) == S_IN_RAT_COMBAT) && InteractionUtil.walkToLocatable(new Tile(3107, 9519), 3) && Players.getLocal().getInteractingEntity() == null) {
             CombatInstructorStep.killRat(false);
         }
 
-        if (Settings.get(281) == S_EQUIP_RANGED && CombatInstructorStep.checkEquip("Shortbow", "Bronze arrow") && InteractionUtil.walkToLocatable(new Tile(3108, 9512), 2)) {
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_EQUIP_RANGED && CombatInstructorStep.checkEquip("Shortbow", "Bronze arrow") && InteractionUtil.walkToLocatable(new Tile(3108, 9512), 2)) {
             CombatInstructorStep.killRat(true);
         }
     }
 
     private static void talk() {
         if (InteractionUtil.walkToLocatable(ENTRACE_TILE, 4)) {
-            InteractionUtil.walkToAndInteract(Npcs.getNearest("Combat Instructor"), "Talk-to", InteractionUtil.CAN_CONTINUE_DIALOG_COND, 3000);
+            InteractionUtil.walkToAndInteract(Npcs.getNearest("Combat Instructor"), "Talk-to", Constants.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 
