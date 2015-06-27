@@ -1,6 +1,6 @@
 package deob.step;
 
-import deob.util.Util;
+import deob.util.InteractionUtil;
 import org.tbot.methods.GameObjects;
 import org.tbot.methods.Settings;
 import org.tbot.wrappers.Tile;
@@ -16,24 +16,21 @@ public final class BankAndPollStep {
     private static final int S_USE_POLL = 520;
 
     public static boolean hasProgressedPast() {
-        if (Settings.get(281) > 520) {
-            return true;
-        }
+        return Settings.get(281) > 520;
 
-        return false;
     }
 
     public static void handle() {
         if (Settings.get(281) == S_GO_UP_LADDER) {
-            Util.walkToLocatable(ENTRANCE_TILE, 6);
+            InteractionUtil.walkToLocatable(ENTRANCE_TILE, 6);
         }
 
         if (Settings.get(281) == S_USE_BANK) {
-            Util.walkToAndInteract(GameObjects.getNearest("Bank booth"), "Use", Util.CAN_CONTINUE_DIALOG_COND, 3000);
+            InteractionUtil.walkToAndInteract(GameObjects.getNearest("Bank booth"), "Use", InteractionUtil.CAN_CONTINUE_DIALOG_COND, 3000);
         }
 
         if (Settings.get(281) == S_USE_POLL) {
-            Util.walkToAndInteract(GameObjects.getNearest("Poll booth"), "Use", Util.CAN_CONTINUE_DIALOG_COND, 3000);
+            InteractionUtil.walkToAndInteract(GameObjects.getNearest("Poll booth"), "Use", InteractionUtil.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 

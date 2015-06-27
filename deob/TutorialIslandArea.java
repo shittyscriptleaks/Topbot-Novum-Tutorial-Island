@@ -1,6 +1,5 @@
 package deob;
 
-import deob.util.WebUtil;
 import org.tbot.methods.web.Web;
 import org.tbot.methods.web.actions.ObjectAction;
 import org.tbot.methods.web.areas.WebArea;
@@ -67,7 +66,7 @@ public final class TutorialIslandArea extends WebArea {
         web.addWalkConnection(webNode30, webNode31);
         web.addWalkConnection(webNode31, webNode32);
         webNode29.addConnection(new ActionConnection(webNode29, webNode30, new ObjectAction(webNode30.getLocation(), "Door", "Open")));
-        webNode27.addConnection(new ActionConnection(webNode27, webNode28, new OpenLargeDoorObjectAction(this, webNode27.getLocation(), "Large door", "Open")));
+        webNode27.addConnection(new ActionConnection(webNode27, webNode28, new OpenLargeDoorObjectAction(webNode27.getLocation(), "Large door", "Open")));
         webNode25.addConnection(new ActionConnection(webNode25, webNode26, new ObjectAction(webNode26.getLocation(), "Door", "Open")));
         webNode23.addConnection(new ActionConnection(webNode23, webNode24, new ObjectAction(webNode24.getLocation(), "Door", "Open")));
         webNode21.addConnection(new ActionConnection(webNode21, webNode22, new ObjectAction(new Tile(3111, 9526), "Ladder", "Climb-up")));

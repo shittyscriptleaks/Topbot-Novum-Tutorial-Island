@@ -1,13 +1,7 @@
 package deob.step;
 
-import deob.util.Util;
-import deob.condition.*;
-import org.tbot.methods.GameObjects;
-import org.tbot.methods.Npcs;
-import org.tbot.methods.Players;
-import org.tbot.methods.Settings;
-import org.tbot.methods.Time;
-import org.tbot.methods.Widgets;
+import deob.util.InteractionUtil;
+import org.tbot.methods.*;
 import org.tbot.methods.tabs.Inventory;
 import org.tbot.wrappers.GameObject;
 import org.tbot.wrappers.Tile;
@@ -33,12 +27,11 @@ public final class SmithingGuyStep {
 
     private static final int S_USE_BAR_ON_ANVIL = 340;
 
-    public static boolean hasProgressedPast() {
-        if (Settings.get(281) > 350) {
-            return true;
-        }
+    private static final int S_SMITH_BRONZE_DAGGER = 350;
 
-        return false;
+    public static boolean hasProgressedPast() {
+        return Settings.get(281) > 350;
+
     }
 
     public static void handle() {
@@ -86,36 +79,36 @@ public final class SmithingGuyStep {
             SmithingGuyStep.useBarOnAnvil();
         }
 
-        if (Settings.get(281) == 350 && (widgetChild = Widgets.getWidgetByText("Dagger")) != null && widgetChild.isVisible() && widgetChild.click()) {
-            Time.sleepUntil(new IsNotSmithingBronzeDaggerCondition(), 4000);
+        if (Settings.get(281) == S_SMITH_BRONZE_DAGGER && (widgetChild = Widgets.getWidgetByText("Dagger")) != null && widgetChild.isVisible() && widgetChild.click()) {
+            Time.sleepUntil(() -> Settings.get(281) != S_SMITH_BRONZE_DAGGER, 4000);
         }
     }
 
     private static void talk() {
-        if (Util.walkToLocatable(ENTRANCE_TILE, 10)) {
-            Util.walkToAndInteract(Npcs.getNearest("Mining Instructor"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
+        if (InteractionUtil.walkToLocatable(ENTRANCE_TILE, 10)) {
+            InteractionUtil.walkToAndInteract(Npcs.getNearest("Mining Instructor"), "Talk-to", InteractionUtil.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 
     private static void prospectOre(Tile tile, int setting) {
-        Util.walkToAndInteract(GameObjects.getTopAt(tile), "Prospect", new IsProgressSettingNotEqual(setting), 5000);
+        InteractionUtil.walkToAndInteract(GameObjects.getTopAt(tile), "Prospect", () -> Settings.get(281) != setting, 5000);
     }
 
     private static void mineOre(Tile tile, int setting) {
         if (Players.getLocal().getAnimation() == -1) {
-            Util.walkToAndInteract(GameObjects.getTopAt(tile), "Mine", new LocalNotPerformingAnimationCondition(), 3000);
+            InteractionUtil.walkToAndInteract(GameObjects.getTopAt(tile), "Mine", () -> Players.getLocal().getAnimation() != -1, 3000);
         }
     }
 
     private static void smeltBar() {
-        if (Util.walkToLocatable(new Tile(3079, 9497), 0)) {
+        if (InteractionUtil.walkToLocatable(new Tile(3079, 9497), 0)) {
             GameObject gameObject = GameObjects.getNearest("Furnace");
-            Util.walkToAndInteract(gameObject, new UseTinOreOnObjectCondition(gameObject), new IsNotMakingBarCondition(), 4000);
+            InteractionUtil.walkToAndInteract(gameObject, () -> Inventory.useItemOn("Tin ore", gameObject), () -> Settings.get(281) != S_MAKE_BAR, 4000);
         }
     }
 
     private static void useBarOnAnvil() {
-        Util.walkToAndInteract(GameObjects.getNearest("Anvil"), "Smith", new IsNotUsingBarOnAnvilCondition(), 5000);
+        InteractionUtil.walkToAndInteract(GameObjects.getNearest("Anvil"), "Smith", () -> Settings.get(281) != S_USE_BAR_ON_ANVIL, 5000);
     }
 
 }

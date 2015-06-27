@@ -1,6 +1,6 @@
 package deob.step;
 
-import deob.util.Util;
+import deob.util.InteractionUtil;
 import org.tbot.methods.Npcs;
 import org.tbot.methods.Settings;
 import org.tbot.methods.Widgets;
@@ -21,11 +21,8 @@ public final class BrotherBraceStep {
     private static final int S_SOCIAL_OPEN_TALK_TO_BROTHER = 600;
 
     public static boolean hasProgressedPast() {
-        if (Settings.get(281) > 600) {
-            return true;
-        }
+        return Settings.get(281) > 600;
 
-        return false;
     }
 
     public static void handle() {
@@ -49,8 +46,8 @@ public final class BrotherBraceStep {
     }
 
     private static void talkToBrother() {
-        if (Util.walkToLocatable(ENTRACE_TILE, 7)) {
-            Util.walkToAndInteract(Npcs.getNearest("Brother Brace"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
+        if (InteractionUtil.walkToLocatable(ENTRACE_TILE, 7)) {
+            InteractionUtil.walkToAndInteract(Npcs.getNearest("Brother Brace"), "Talk-to", InteractionUtil.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 

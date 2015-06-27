@@ -1,9 +1,6 @@
 package deob.step;
 
-import deob.RatNPCFilter;
-import deob.util.Util;
-import deob.condition.IsNotViewingWornEquipmentCondition;
-import deob.condition.LocalPlayerHasNoInteractingEntityCondition;
+import deob.util.InteractionUtil;
 import org.tbot.methods.*;
 import org.tbot.methods.tabs.Equipment;
 import org.tbot.methods.tabs.Inventory;
@@ -31,11 +28,8 @@ public final class CombatInstructorStep {
     private static final int S_EQUIP_RANGED = 480;
 
     public static boolean hasProgressedPast() {
-        if (Settings.get(281) > 490) {
-            return true;
-        }
+        return Settings.get(281) > 490;
 
-        return false;
     }
 
     public static void handle() {
@@ -53,7 +47,7 @@ public final class CombatInstructorStep {
         }
 
         if (Settings.get(281) == S_VIEW_WORN_EQUIPMENT && (Equipment.isOpen() || Equipment.openTab()) && (widgetChild = Widgets.getWidget(387, 17)) != null && widgetChild.isVisible() && widgetChild.click()) {
-            Time.sleepUntil(new IsNotViewingWornEquipmentCondition(), 2000);
+            Time.sleepUntil(() -> Settings.get(281) != S_VIEW_WORN_EQUIPMENT, 2000);
         }
 
         if (Settings.get(281) == S_WIELD_DAGGER) {
@@ -68,40 +62,37 @@ public final class CombatInstructorStep {
             Widgets.openTab(0);
         }
 
-        if ((Settings.get(281) == S_ENTER_RAT_AREA || Settings.get(281) == S_KILL_RAT_WITH_MELEE || Settings.get(281) == S_IN_RAT_COMBAT) && Util.walkToLocatable(new Tile(3107, 9519), 3) && Players.getLocal().getInteractingEntity() == null) {
+        if ((Settings.get(281) == S_ENTER_RAT_AREA || Settings.get(281) == S_KILL_RAT_WITH_MELEE || Settings.get(281) == S_IN_RAT_COMBAT) && InteractionUtil.walkToLocatable(new Tile(3107, 9519), 3) && Players.getLocal().getInteractingEntity() == null) {
             CombatInstructorStep.killRat(false);
         }
 
-        if (Settings.get(281) == S_EQUIP_RANGED && CombatInstructorStep.checkEquip("Shortbow", "Bronze arrow") && Util.walkToLocatable(new Tile(3108, 9512), 2)) {
+        if (Settings.get(281) == S_EQUIP_RANGED && CombatInstructorStep.checkEquip("Shortbow", "Bronze arrow") && InteractionUtil.walkToLocatable(new Tile(3108, 9512), 2)) {
             CombatInstructorStep.killRat(true);
         }
     }
 
     private static void talk() {
-        if (Util.walkToLocatable(ENTRACE_TILE, 4)) {
-            Util.walkToAndInteract(Npcs.getNearest("Combat Instructor"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
+        if (InteractionUtil.walkToLocatable(ENTRACE_TILE, 4)) {
+            InteractionUtil.walkToAndInteract(Npcs.getNearest("Combat Instructor"), "Talk-to", InteractionUtil.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 
     public static boolean checkEquip(String... itemNames) {
-        int n;
-        int len = itemNames.length;
-        int ptr = n = 0;
-        while (ptr < len) {
-            String string = itemNames[n];
-            if (!Equipment.contains(string)) {
-                if (Inventory.contains(string) && Inventory.getFirst(string).click()) {
+        for (String s : itemNames) {
+            if (!Equipment.contains(s)) {
+                if (Inventory.contains(s) && Inventory.getFirst(s).click()) {
                     Time.sleep(100, 400);
                 }
                 return false;
             }
-            ptr = ++n;
         }
+
         return true;
     }
 
     private static void killRat(boolean canBeFarAway) {
-        Util.walkToAndInteract(Npcs.getNearest(new RatNPCFilter()), "Attack", new LocalPlayerHasNoInteractingEntityCondition(), 3000, !canBeFarAway);
+        InteractionUtil.walkToAndInteract(Npcs.getNearest((n) -> n.getName() != null && n.getInteractingEntity() == null && n.getName().equals("Giant rat")),
+                "Attack", () -> Players.getLocal().getInteractingEntity() == null, 3000, !canBeFarAway);
     }
 
 }

@@ -1,8 +1,5 @@
 package deob;
 
-import deob.condition.HasNoClosableWidgetCondition;
-import deob.condition.IsBankNotOpenCondition;
-import deob.condition.IsWidgetNotOpenCondition;
 import deob.step.*;
 import deob.util.WebUtil;
 import org.tbot.bot.TBot;
@@ -120,7 +117,7 @@ public final class TutorialScript extends AbstractScript implements PaintListene
 
         WidgetChild widgetChild2 = Widgets.getWidget(84, 4);
         if (widgetChild2 != null && widgetChild2.isVisible() && widgetChild2.click()) {
-            Time.sleepUntil(new IsWidgetNotOpenCondition(this, widgetChild2), 1000);
+            Time.sleepUntil(() -> !widgetChild2.isVisible(), 1000);
             return true;
         }
 
@@ -131,12 +128,12 @@ public final class TutorialScript extends AbstractScript implements PaintListene
         }
 
         if (Bank.isOpen() && Bank.close()) {
-            Time.sleepUntil(new IsBankNotOpenCondition(this), 2000);
+            Time.sleepUntil(() -> !Bank.isOpen(), 2000);
             return true;
         }
 
         if (Widgets.canClose() && Widgets.close()) {
-            Time.sleepUntil(new HasNoClosableWidgetCondition(this), 2000);
+            Time.sleepUntil(() -> !Widgets.canClose(), 2000);
             return true;
         }
 

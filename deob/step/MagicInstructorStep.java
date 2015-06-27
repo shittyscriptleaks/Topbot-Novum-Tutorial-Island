@@ -1,8 +1,6 @@
 package deob.step;
 
-import deob.ChickenNPCFilter;
-import deob.util.Util;
-import deob.condition.IsNotCastingWindStrikeCondition;
+import deob.util.InteractionUtil;
 import org.tbot.methods.Npcs;
 import org.tbot.methods.Settings;
 import org.tbot.methods.Widgets;
@@ -24,11 +22,8 @@ public final class MagicInstructorStep {
     private static final int S_LEAVE_TALK_TO_MAGIC_INSTRUCTOR = 670;
 
     public static boolean hasProgressedPast() {
-        if (Settings.get(281) >= 1000) {
-            return true;
-        }
+        return Settings.get(281) >= 1000;
 
-        return false;
     }
 
     public static void handle() {
@@ -48,14 +43,19 @@ public final class MagicInstructorStep {
             Widgets.openTab(6);
         }
 
-        if (Settings.get(281) == S_WIND_STRIKE_CHICKEN && Util.walkToLocatable(new Tile(3140, 3090), 0) && (Magic.getSelectedSpell() == SpellBooks.Modern.WIND_STRIKE || Magic.cast(SpellBooks.Modern.WIND_STRIKE))) {
-            Util.walkToAndInteract(Npcs.getNearest(new ChickenNPCFilter()), "Cast", new IsNotCastingWindStrikeCondition(), 4000);
+        if (Settings.get(281) == S_WIND_STRIKE_CHICKEN &&
+                InteractionUtil.walkToLocatable(new Tile(3140, 3090), 0) &&
+                (Magic.getSelectedSpell() == SpellBooks.Modern.WIND_STRIKE ||
+                        Magic.cast(SpellBooks.Modern.WIND_STRIKE))) {
+
+            InteractionUtil.walkToAndInteract(Npcs.getNearest((n) -> n.getInteractingEntity() == null && n.getName().equals("Chicken")),
+                    "Cast", () -> Settings.get(281) != S_WIND_STRIKE_CHICKEN, 4000);
         }
     }
 
     private static void talk() {
-        if (Util.walkToLocatable(ENTRANCE_TILE, 7)) {
-            Util.walkToAndInteract(Npcs.getNearest("Magic Instructor"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
+        if (InteractionUtil.walkToLocatable(ENTRANCE_TILE, 7)) {
+            InteractionUtil.walkToAndInteract(Npcs.getNearest("Magic Instructor"), "Talk-to", InteractionUtil.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 

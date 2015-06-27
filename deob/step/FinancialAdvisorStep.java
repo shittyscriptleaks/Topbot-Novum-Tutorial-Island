@@ -1,7 +1,6 @@
 package deob.step;
 
-import deob.util.Util;
-import deob.util.WebUtil;
+import deob.util.InteractionUtil;
 import org.tbot.methods.Npcs;
 import org.tbot.methods.Settings;
 import org.tbot.methods.Time;
@@ -30,15 +29,12 @@ public final class FinancialAdvisorStep {
     }
 
     public static boolean hasProgressedPast() {
-        if (Settings.get(281) > 530) {
-            return true;
-        }
-        return false;
+        return Settings.get(281) > 530;
     }
 
     private static void talk() {
-        if (Util.walkToLocatable(ENTRANCE_TILE, 2)) {
-            Util.walkToAndInteract(Npcs.getNearest("Financial Advisor"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
+        if (InteractionUtil.walkToLocatable(ENTRANCE_TILE, 2)) {
+            InteractionUtil.walkToAndInteract(Npcs.getNearest("Financial Advisor"), "Talk-to", InteractionUtil.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 

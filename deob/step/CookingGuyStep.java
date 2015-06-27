@@ -1,13 +1,7 @@
 package deob.step;
 
-import deob.util.Util;
-import deob.condition.IsMakingUncookedBreadCondition;
-import deob.condition.IsNotMakingBreadCondition;
-import org.tbot.methods.GameObjects;
-import org.tbot.methods.Npcs;
-import org.tbot.methods.Settings;
-import org.tbot.methods.Time;
-import org.tbot.methods.Widgets;
+import deob.util.InteractionUtil;
+import org.tbot.methods.*;
 import org.tbot.methods.tabs.Inventory;
 import org.tbot.wrappers.Tile;
 
@@ -25,11 +19,8 @@ public final class CookingGuyStep {
     private static final int S_OPEN_MUSIC_TAB = 170;
 
     public static boolean hasProgressedPast() {
-        if (Settings.get(281) > 170) {
-            return true;
-        }
+        return Settings.get(281) > 170;
 
-        return false;
     }
 
     public static void handle() {
@@ -51,8 +42,8 @@ public final class CookingGuyStep {
     }
 
     private static void talk() {
-        if (Util.walkToLocatable(ENTRANCE_TILE, 3)) {
-            Util.walkToAndInteract(Npcs.getNearest("Master Chef"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
+        if (InteractionUtil.walkToLocatable(ENTRANCE_TILE, 3)) {
+            InteractionUtil.walkToAndInteract(Npcs.getNearest("Master Chef"), "Talk-to", InteractionUtil.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 
@@ -68,7 +59,7 @@ public final class CookingGuyStep {
         }
 
         if (Inventory.useItemOn("Pot of flour", "Bucket of water")) {
-            Time.sleepUntil(new IsMakingUncookedBreadCondition(), 3000);
+            Time.sleepUntil(() -> Settings.get(281) != S_COMBINE_FLOUR_AND_WATER, 3000);
         }
     }
 
@@ -76,7 +67,7 @@ public final class CookingGuyStep {
         Time.sleep(300, 600);
         if (Inventory.contains("Bread dough")) {
             if (Inventory.useItemOn("Bread dough", GameObjects.getNearest("Range"))) {
-                Time.sleepUntil(new IsNotMakingBreadCondition(), 5000);
+                Time.sleepUntil(() -> Settings.get(281) != S_COOK_BREAD, 5000);
             }
         } else {
             CookingGuyStep.combineIngrediants();

@@ -1,7 +1,6 @@
 package deob.step;
 
-import deob.util.Util;
-import deob.condition.MakeoverWidgetNotOpenCondition;
+import deob.util.InteractionUtil;
 import org.tbot.methods.Npcs;
 import org.tbot.methods.Settings;
 import org.tbot.methods.Time;
@@ -23,12 +22,11 @@ public final class RunescapeGuideStep {
     private static final int S_SETTINGS_OPEN_TALK_TO_GUIDE = 7;
     private static final int S_LEAVE_THROUGH_DOOR = 10;
 
-    public static boolean hasProgressedPast() {
-        if (Settings.get(281) > 10) {
-            return true;
-        }
+    private static final int WIDGET_ROOT_MAKEOVER_MAGE = 269;
 
-        return false;
+    public static boolean hasProgressedPast() {
+        return Settings.get(281) > 10;
+
     }
 
     public static void handle() {
@@ -45,26 +43,19 @@ public final class RunescapeGuideStep {
         }
 
         if (Settings.get(281) == S_LEAVE_THROUGH_DOOR) {
-            Util.walkToLocatable(new Tile(3102, 3096), 4);
+            InteractionUtil.walkToLocatable(new Tile(3102, 3096), 4);
         }
     }
 
     private static void randomizeAppearance(int... widgetIds) {
-        int n;
-        int n2 = widgetIds.length;
-        int n3 = n = 0;
-        while (n3 < n2) {
-            int n4 = widgetIds[n];
+        for (int id : widgetIds) {
             if (Math.random() >= 0.3) {
-                int n5;
-                int n6 = n5 = 0;
-                while ((double)n6 < Math.random() * 10.0) {
+                double threshold = Math.random() * 10.0D;
+                for (double d = 0; d < threshold; d++) {
                     Time.sleep(100, 300);
-                    Widgets.getWidget(269, n4).click();
-                    n6 = ++n5;
+                    Widgets.getWidget(WIDGET_ROOT_MAKEOVER_MAGE, id).click();
                 }
             }
-            n3 = ++n;
         }
     }
 
@@ -73,7 +64,7 @@ public final class RunescapeGuideStep {
             RunescapeGuideStep.randomizeAppearance(LEFT_IDS);
             RunescapeGuideStep.randomizeAppearance(RIGHT_IDS);
             if (Widgets.getWidget(269, 99).click()) {
-                Time.sleepUntil(new MakeoverWidgetNotOpenCondition());
+                Time.sleepUntil(() -> !Widgets.getWidget(269, 113).isVisible());
             }
             return true;
         }
@@ -82,8 +73,8 @@ public final class RunescapeGuideStep {
     }
 
     private static void talk() {
-        if (Util.walkToLocatable(ENTRANCE_TILE, 5)) {
-            Util.walkToAndInteract(Npcs.getNearest("Runescape Guide"), "Talk-to", Util.CAN_CONTINUE_DIALOG_COND, 3000);
+        if (InteractionUtil.walkToLocatable(ENTRANCE_TILE, 5)) {
+            InteractionUtil.walkToAndInteract(Npcs.getNearest("Runescape Guide"), "Talk-to", InteractionUtil.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 
