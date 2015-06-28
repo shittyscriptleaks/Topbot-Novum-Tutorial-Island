@@ -7,9 +7,7 @@ import org.tbot.methods.tabs.Emotes;
 import org.tbot.methods.walking.Walking;
 import org.tbot.wrappers.Tile;
 
-public final class QuestGuyStep {
-
-    private QuestGuyStep() { }
+public final class QuestGuyStep implements TutorialStep {
 
     private static final Tile ENTRACE_TILE = new Tile(3085, 3122);
 
@@ -23,12 +21,14 @@ public final class QuestGuyStep {
     private static final int S_OPEN_QUEST_TAB = 230;
     private static final int S_QUEST_TAB_OPEN_TALK_TO_QUEST_GUY = 240;
 
-    public static boolean hasProgressedPast() {
+    @Override
+    public boolean hasProgressedPast() {
         return Settings.get(Constants.PROGRESS_SETTING_ID) > 240;
 
     }
 
-    public static void handle() {
+    @Override
+    public void handle() {
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_EMOTE_TAB) {
             Widgets.openTab(12);
         }
@@ -51,7 +51,7 @@ public final class QuestGuyStep {
                 Settings.get(Constants.PROGRESS_SETTING_ID) == S_TALK_TO_QUEST_GUY ||
                 Settings.get(Constants.PROGRESS_SETTING_ID) == S_QUEST_TAB_OPEN_TALK_TO_QUEST_GUY) {
 
-            QuestGuyStep.talk();
+            talk();
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_QUEST_TAB) {
@@ -59,8 +59,8 @@ public final class QuestGuyStep {
         }
     }
 
-    private static void talk() {
-        if (InteractionUtil.walkToLocatable(ENTRACE_TILE, 3)) {
+    private void talk() {
+        if (InteractionUtil.walkTo(ENTRACE_TILE, 3)) {
             InteractionUtil.walkToAndInteract(Npcs.getNearest("Quest Guide"), "Talk-to", Constants.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }

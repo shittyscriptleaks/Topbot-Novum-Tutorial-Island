@@ -16,19 +16,19 @@ public final class InteractionUtil {
 
     private static int toggleRunThreshold = 40;
 
+    private static void handleRunToggle() {
+        if (!Walking.isRunEnabled() && Walking.getRunEnergy() >= toggleRunThreshold && Walking.setRun(true)) {
+            toggleRunThreshold = Random.nextInt(20, 50);
+            Time.sleepUntil(Walking::isRunEnabled, Random.nextInt(800, 1200));
+        }
+    }
+
     public static void walkToAndInteract(Locatable locatable, Condition condition, Condition condition2, int breakTime) {
         InteractionUtil.walkToAndInteract(locatable, condition, condition2, breakTime, !(locatable instanceof GameObject));
     }
 
     public static void walkToAndInteract(Locatable locatable, String action, Condition condition, int breakTime, boolean canBeFarAway) {
         InteractionUtil.walkToAndInteract(locatable, () -> ((Interactable) locatable).interact(action), condition, breakTime, canBeFarAway);
-    }
-
-    public static void handleRunToggle() {
-        if (!Walking.isRunEnabled() && Walking.getRunEnergy() >= toggleRunThreshold && Walking.setRun(true)) {
-            toggleRunThreshold = Random.nextInt(20, 50);
-            Time.sleepUntil(Walking::isRunEnabled, Random.nextInt(800, 1200));
-        }
     }
 
     public static void walkToAndInteract(Locatable locatable, String action, Condition condition, int breakTime) {
@@ -47,10 +47,10 @@ public final class InteractionUtil {
             return;
         }
 
-        InteractionUtil.walkToLocatable(locatable, 1);
+        InteractionUtil.walkTo(locatable, 1);
     }
 
-    public static boolean walkToLocatable(Locatable locatable, int dist) {
+    public static boolean walkTo(Locatable locatable, int dist) {
         InteractionUtil.handleRunToggle();
 
         if (locatable == null) {
@@ -76,7 +76,7 @@ public final class InteractionUtil {
         return false;
     }
 
-    public static boolean shouldContinueWalking(Locatable locatable) {
+    private static boolean shouldContinueWalking(Locatable locatable) {
         if (Walking.getDestination() != null) {
             int distance = locatable.distance(Walking.getDestination());
             return !(Walking.isMoving() && distance <= 2);

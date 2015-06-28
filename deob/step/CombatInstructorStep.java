@@ -8,11 +8,10 @@ import org.tbot.methods.tabs.Inventory;
 import org.tbot.wrappers.Tile;
 import org.tbot.wrappers.WidgetChild;
 
-public final class CombatInstructorStep {
-
-    private CombatInstructorStep() { }
+public final class CombatInstructorStep implements TutorialStep {
 
     private static final Tile ENTRACE_TILE = new Tile(3107, 9509);
+    private static final Tile PIN_ENTRANCE_TILE = new Tile(3108, 9512);
 
     private static final int S_WALK_THROUGH_GATE = 360;
     private static final int S_TALK_TO_INSTRUCTOR = 370;
@@ -28,19 +27,21 @@ public final class CombatInstructorStep {
     private static final int S_DEAD_RAT_TALK_TO_INSTRUCTOR = 470;
     private static final int S_EQUIP_RANGED = 480;
 
-    public static boolean hasProgressedPast() {
+    @Override
+    public boolean hasProgressedPast() {
         return Settings.get(Constants.PROGRESS_SETTING_ID) > 490;
 
     }
 
-    public static void handle() {
+    @Override
+    public void handle() {
         WidgetChild widgetChild;
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_WALK_THROUGH_GATE ||
                 Settings.get(Constants.PROGRESS_SETTING_ID) == S_TALK_TO_INSTRUCTOR ||
                 Settings.get(Constants.PROGRESS_SETTING_ID) == S_EQUIPPED_TALK_TO_INSTRUCTOR ||
                 Settings.get(Constants.PROGRESS_SETTING_ID) == S_DEAD_RAT_TALK_TO_INSTRUCTOR) {
 
-            CombatInstructorStep.talk();
+            talk();
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_EQUIP_TAB) {
@@ -52,33 +53,33 @@ public final class CombatInstructorStep {
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_WIELD_DAGGER) {
-            CombatInstructorStep.checkEquip("Bronze dagger");
+            checkEquip("Bronze dagger");
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_EQUIP_SWORD_AND_SHIELD) {
-            CombatInstructorStep.checkEquip("Bronze sword", "Wooden shield");
+            checkEquip("Bronze sword", "Wooden shield");
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_COMBAT_OPTIONS) {
             Widgets.openTab(0);
         }
 
-        if ((Settings.get(Constants.PROGRESS_SETTING_ID) == S_ENTER_RAT_AREA || Settings.get(Constants.PROGRESS_SETTING_ID) == S_KILL_RAT_WITH_MELEE || Settings.get(Constants.PROGRESS_SETTING_ID) == S_IN_RAT_COMBAT) && InteractionUtil.walkToLocatable(new Tile(3107, 9519), 3) && Players.getLocal().getInteractingEntity() == null) {
-            CombatInstructorStep.killRat(false);
+        if ((Settings.get(Constants.PROGRESS_SETTING_ID) == S_ENTER_RAT_AREA || Settings.get(Constants.PROGRESS_SETTING_ID) == S_KILL_RAT_WITH_MELEE || Settings.get(Constants.PROGRESS_SETTING_ID) == S_IN_RAT_COMBAT) && InteractionUtil.walkTo(new Tile(3107, 9519), 3) && Players.getLocal().getInteractingEntity() == null) {
+            killRat(false);
         }
 
-        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_EQUIP_RANGED && CombatInstructorStep.checkEquip("Shortbow", "Bronze arrow") && InteractionUtil.walkToLocatable(new Tile(3108, 9512), 2)) {
-            CombatInstructorStep.killRat(true);
+        if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_EQUIP_RANGED && checkEquip("Shortbow", "Bronze arrow") && InteractionUtil.walkTo(PIN_ENTRANCE_TILE, 2)) {
+            killRat(true);
         }
     }
 
-    private static void talk() {
-        if (InteractionUtil.walkToLocatable(ENTRACE_TILE, 4)) {
+    private void talk() {
+        if (InteractionUtil.walkTo(ENTRACE_TILE, 4)) {
             InteractionUtil.walkToAndInteract(Npcs.getNearest("Combat Instructor"), "Talk-to", Constants.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 
-    public static boolean checkEquip(String... itemNames) {
+    public boolean checkEquip(String... itemNames) {
         for (String s : itemNames) {
             if (!Equipment.contains(s)) {
                 if (Inventory.contains(s) && Inventory.getFirst(s).click()) {
@@ -91,7 +92,7 @@ public final class CombatInstructorStep {
         return true;
     }
 
-    private static void killRat(boolean canBeFarAway) {
+    private void killRat(boolean canBeFarAway) {
         InteractionUtil.walkToAndInteract(Npcs.getNearest((n) -> n.getName() != null && n.getInteractingEntity() == null && n.getName().equals("Giant rat")),
                 "Attack", () -> Players.getLocal().getInteractingEntity() == null, 3000, !canBeFarAway);
     }

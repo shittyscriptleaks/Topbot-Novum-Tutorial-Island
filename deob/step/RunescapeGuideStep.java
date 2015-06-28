@@ -8,9 +8,7 @@ import org.tbot.methods.Time;
 import org.tbot.methods.Widgets;
 import org.tbot.wrappers.Tile;
 
-public final class RunescapeGuideStep {
-
-    private RunescapeGuideStep() { }
+public final class RunescapeGuideStep implements TutorialStep {
 
     private static final Tile ENTRANCE_TILE = new Tile(3094, 3107, 0);
 
@@ -25,18 +23,20 @@ public final class RunescapeGuideStep {
 
     private static final int WIDGET_ROOT_MAKEOVER_MAGE = 269;
 
-    public static boolean hasProgressedPast() {
+    @Override
+    public boolean hasProgressedPast() {
         return Settings.get(Constants.PROGRESS_SETTING_ID) > 10;
 
     }
 
-    public static void handle() {
-        if (RunescapeGuideStep.handleMakeoverInterface()) {
+    @Override
+    public void handle() {
+        if (handleMakeoverInterface()) {
             return;
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_INITIAL_TALK_TO_GUIDE || Settings.get(Constants.PROGRESS_SETTING_ID) == S_SETTINGS_OPEN_TALK_TO_GUIDE) {
-            RunescapeGuideStep.talk();
+            talk();
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_SETTINGS) {
@@ -44,11 +44,11 @@ public final class RunescapeGuideStep {
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_LEAVE_THROUGH_DOOR) {
-            InteractionUtil.walkToLocatable(new Tile(3102, 3096), 4);
+            InteractionUtil.walkTo(new Tile(3102, 3096), 4);
         }
     }
 
-    private static void randomizeAppearance(int... widgetIds) {
+    private void randomizeAppearance(int... widgetIds) {
         for (int id : widgetIds) {
             if (Math.random() >= 0.3) {
                 double threshold = Math.random() * 10.0D;
@@ -60,10 +60,11 @@ public final class RunescapeGuideStep {
         }
     }
 
-    private static boolean handleMakeoverInterface() {
+    private boolean handleMakeoverInterface() {
         if (Widgets.getWidget(269, 113).isVisible()) {
-            RunescapeGuideStep.randomizeAppearance(LEFT_IDS);
-            RunescapeGuideStep.randomizeAppearance(RIGHT_IDS);
+            randomizeAppearance(LEFT_IDS);
+            randomizeAppearance(RIGHT_IDS);
+
             if (Widgets.getWidget(269, 99).click()) {
                 Time.sleepUntil(() -> !Widgets.getWidget(269, 113).isVisible());
             }
@@ -73,8 +74,8 @@ public final class RunescapeGuideStep {
         return false;
     }
 
-    private static void talk() {
-        if (InteractionUtil.walkToLocatable(ENTRANCE_TILE, 5)) {
+    private void talk() {
+        if (InteractionUtil.walkTo(ENTRANCE_TILE, 5)) {
             InteractionUtil.walkToAndInteract(Npcs.getNearest("Runescape Guide"), "Talk-to", Constants.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }

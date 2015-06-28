@@ -6,9 +6,7 @@ import org.tbot.methods.*;
 import org.tbot.methods.tabs.Inventory;
 import org.tbot.wrappers.Tile;
 
-public final class CookingGuyStep {
-
-    private CookingGuyStep() { }
+public final class CookingGuyStep implements TutorialStep {
 
     private static final Tile ENTRANCE_TILE = new Tile(3075, 3084);
 
@@ -19,22 +17,24 @@ public final class CookingGuyStep {
     private static final int S_COOK_BREAD = 160;
     private static final int S_OPEN_MUSIC_TAB = 170;
 
-    public static boolean hasProgressedPast() {
+    @Override
+    public boolean hasProgressedPast() {
         return Settings.get(Constants.PROGRESS_SETTING_ID) > 170;
 
     }
 
-    public static void handle() {
+    @Override
+    public void handle() {
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_WOOD_GATE || Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_DOOR || Settings.get(Constants.PROGRESS_SETTING_ID) == S_TALK_TO_COOK) {
-            CookingGuyStep.talk();
+            talk();
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_COMBINE_FLOUR_AND_WATER) {
-            CookingGuyStep.combineIngrediants();
+            combineIngrediants();
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_COOK_BREAD) {
-            CookingGuyStep.cookBread();
+            cookBread();
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_MUSIC_TAB) {
@@ -42,20 +42,20 @@ public final class CookingGuyStep {
         }
     }
 
-    private static void talk() {
-        if (InteractionUtil.walkToLocatable(ENTRANCE_TILE, 3)) {
+    private void talk() {
+        if (InteractionUtil.walkTo(ENTRANCE_TILE, 3)) {
             InteractionUtil.walkToAndInteract(Npcs.getNearest("Master Chef"), "Talk-to", Constants.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 
-    private static void combineIngrediants() {
+    private void combineIngrediants() {
         if (Inventory.getFirst("Pot of flour") == null) {
-            CookingGuyStep.talk();
+            talk();
             return;
         }
 
         if (Inventory.getFirst("Bucket of water") == null) {
-            CookingGuyStep.talk();
+            talk();
             return;
         }
 
@@ -64,14 +64,14 @@ public final class CookingGuyStep {
         }
     }
 
-    private static void cookBread() {
+    private void cookBread() {
         Time.sleep(300, 600);
         if (Inventory.contains("Bread dough")) {
             if (Inventory.useItemOn("Bread dough", GameObjects.getNearest("Range"))) {
                 Time.sleepUntil(() -> Settings.get(Constants.PROGRESS_SETTING_ID) != S_COOK_BREAD, 5000);
             }
         } else {
-            CookingGuyStep.combineIngrediants();
+            combineIngrediants();
         }
     }
 

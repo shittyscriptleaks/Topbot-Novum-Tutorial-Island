@@ -8,9 +8,7 @@ import org.tbot.wrappers.GameObject;
 import org.tbot.wrappers.Tile;
 import org.tbot.wrappers.WidgetChild;
 
-public final class SurvivalExpertStep {
-
-    private SurvivalExpertStep() { }
+public final class SurvivalExpertStep implements TutorialStep {
 
     private static final Tile ENTRANCE_TILE = new Tile(3102, 3096);
 
@@ -25,7 +23,7 @@ public final class SurvivalExpertStep {
     private static final int S_BURNT_FISH_SHRIMP = 100;
     private static final int S_COOK_SHRIM_AGAIN = 110;
 
-    private static void f() {
+    private void f() {
         if (Widgets.isOpen(11) || Widgets.openTab(11)) {
             WidgetChild widgetChild = Widgets.getWidget(261, 13);
             if (widgetChild != null && widgetChild.isVisible()) {
@@ -51,19 +49,21 @@ public final class SurvivalExpertStep {
         }
     }
 
-    public static boolean hasProgressedPast() {
+    @Override
+    public boolean hasProgressedPast() {
         return Settings.get(Constants.PROGRESS_SETTING_ID) > 110;
 
     }
 
-    public static void handle() {
+    @Override
+    public void handle() {
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_TALK_TO_EXPERT || Settings.get(Constants.PROGRESS_SETTING_ID) == S_SKILLS_OPEN_TALK_TO_EXPERT) {
             if (Settings.get(168) != 4 || Settings.get(169) != 4 || Settings.get(872) != 4) {
-                SurvivalExpertStep.f();
+                f();
                 return;
             }
 
-            SurvivalExpertStep.talk();
+            talk();
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_INVENTORY) {
@@ -71,11 +71,11 @@ public final class SurvivalExpertStep {
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_CHOP_TREE) {
-            SurvivalExpertStep.chopTree();
+            chopTree();
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_LIGHT_FIRE) {
-            SurvivalExpertStep.attemptLightFire();
+            attemptLightFire();
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_SKILLS) {
@@ -83,32 +83,32 @@ public final class SurvivalExpertStep {
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_FISH_SHRIMP) {
-            SurvivalExpertStep.fish();
+            fish();
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_COOK_SHRIMP || Settings.get(Constants.PROGRESS_SETTING_ID) == S_BURNT_FISH_SHRIMP || Settings.get(Constants.PROGRESS_SETTING_ID) == S_COOK_SHRIM_AGAIN) {
-            SurvivalExpertStep.cookShrimp(Settings.get(Constants.PROGRESS_SETTING_ID));
+            cookShrimp(Settings.get(Constants.PROGRESS_SETTING_ID));
         }
     }
 
-    private static void talk() {
-        if (InteractionUtil.walkToLocatable(ENTRANCE_TILE, 5)) {
+    private void talk() {
+        if (InteractionUtil.walkTo(ENTRANCE_TILE, 5)) {
             InteractionUtil.walkToAndInteract(Npcs.getNearest("Survival Expert"), "Talk-to", Constants.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }
 
-    private static void chopTree() {
+    private void chopTree() {
         if (Players.getLocal().getAnimation() == -1) {
             InteractionUtil.walkToAndInteract(GameObjects.getNearest("Tree"), "Chop down", () -> Players.getLocal().getAnimation() != -1, 3000);
         }
     }
 
-    private static void attemptLightFire() {
+    private void attemptLightFire() {
         if (Inventory.contains("Logs")) {
             if (Players.getLocal().getAnimation() == -1) {
                 GameObject gameObject = GameObjects.getNearest("Fire");
                 if (gameObject != null && gameObject.getLocation().distance() == 0) {
-                    InteractionUtil.walkToLocatable(Players.getLocal().getLocation().getRandomized(3), 0);
+                    InteractionUtil.walkTo(Players.getLocal().getLocation().getRandomized(3), 0);
                     return;
                 }
 
@@ -117,20 +117,20 @@ public final class SurvivalExpertStep {
                 }
             }
         } else {
-            SurvivalExpertStep.chopTree();
+            chopTree();
         }
     }
 
-    private static void fish() {
+    private void fish() {
         if (Players.getLocal().getAnimation() == -1) {
             InteractionUtil.walkToAndInteract(Npcs.getNearest("Fishing spot"), "Net", () -> Players.getLocal().getAnimation() != -1, 3000, false);
         }
     }
 
-    private static void cookShrimp(int setting) {
+    private void cookShrimp(int setting) {
         GameObject gameObject = GameObjects.getNearest("Fire");
         if (gameObject == null) {
-            SurvivalExpertStep.attemptLightFire();
+            attemptLightFire();
             return;
         }
 
@@ -139,7 +139,7 @@ public final class SurvivalExpertStep {
                 Time.sleepUntil(() -> Settings.get(Constants.PROGRESS_SETTING_ID) != setting, 6000);
             }
         } else {
-            SurvivalExpertStep.fish();
+            fish();
         }
     }
 

@@ -7,9 +7,7 @@ import org.tbot.methods.Settings;
 import org.tbot.methods.Widgets;
 import org.tbot.wrappers.Tile;
 
-public final class BrotherBraceStep {
-
-    private BrotherBraceStep() { }
+public final class BrotherBraceStep implements TutorialStep {
 
     private static final Tile ENTRACE_TILE = new Tile(3125, 3107);
 
@@ -21,18 +19,20 @@ public final class BrotherBraceStep {
     private static final int S_OPEN_IGNORE_LIST = 590;
     private static final int S_SOCIAL_OPEN_TALK_TO_BROTHER = 600;
 
-    public static boolean hasProgressedPast() {
+    @Override
+    public boolean hasProgressedPast() {
         return Settings.get(Constants.PROGRESS_SETTING_ID) > 600;
 
     }
 
-    public static void handle() {
+    @Override
+    public void handle() {
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_CONTINUE_THROUGH_DOOR ||
                 Settings.get(Constants.PROGRESS_SETTING_ID) == S_TALK_TO_BROTHER ||
                 Settings.get(Constants.PROGRESS_SETTING_ID) == S_PRAYER_OPEN_TALK_TO_BROTHER ||
                 Settings.get(Constants.PROGRESS_SETTING_ID) == S_SOCIAL_OPEN_TALK_TO_BROTHER) {
 
-            BrotherBraceStep.talkToBrother();
+            talk();
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_PRAYER_TAB) {
@@ -48,8 +48,8 @@ public final class BrotherBraceStep {
         }
     }
 
-    private static void talkToBrother() {
-        if (InteractionUtil.walkToLocatable(ENTRACE_TILE, 7)) {
+    private void talk() {
+        if (InteractionUtil.walkTo(ENTRACE_TILE, 7)) {
             InteractionUtil.walkToAndInteract(Npcs.getNearest("Brother Brace"), "Talk-to", Constants.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }

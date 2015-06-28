@@ -6,9 +6,7 @@ import org.tbot.methods.GameObjects;
 import org.tbot.methods.Settings;
 import org.tbot.wrappers.Tile;
 
-public final class BankAndPollStep {
-
-    private BankAndPollStep() { }
+public final class BankAndPollStep implements TutorialStep {
 
     private static final Tile ENTRANCE_TILE = new Tile(3121, 3121);
 
@@ -16,14 +14,16 @@ public final class BankAndPollStep {
     private static final int S_USE_BANK = 510;
     private static final int S_USE_POLL = 520;
 
-    public static boolean hasProgressedPast() {
+    @Override
+    public boolean hasProgressedPast() {
         return Settings.get(Constants.PROGRESS_SETTING_ID) > 520;
 
     }
 
-    public static void handle() {
+    @Override
+    public void handle() {
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_GO_UP_LADDER) {
-            InteractionUtil.walkToLocatable(ENTRANCE_TILE, 6);
+            InteractionUtil.walkTo(ENTRANCE_TILE, 6);
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_USE_BANK) {

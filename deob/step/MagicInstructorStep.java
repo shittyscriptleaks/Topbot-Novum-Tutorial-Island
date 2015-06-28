@@ -9,9 +9,7 @@ import org.tbot.methods.combat.magic.Magic;
 import org.tbot.methods.combat.magic.SpellBooks;
 import org.tbot.wrappers.Tile;
 
-public final class MagicInstructorStep {
-
-    private MagicInstructorStep() { }
+public final class MagicInstructorStep implements TutorialStep {
 
     private static final Tile ENTRANCE_TILE = new Tile(3141, 3087);
 
@@ -22,12 +20,14 @@ public final class MagicInstructorStep {
     private static final int S_WIND_STRIKE_CHICKEN = 650;
     private static final int S_LEAVE_TALK_TO_MAGIC_INSTRUCTOR = 670;
 
-    public static boolean hasProgressedPast() {
+    @Override
+    public boolean hasProgressedPast() {
         return Settings.get(Constants.PROGRESS_SETTING_ID) >= 1000;
 
     }
 
-    public static void handle() {
+    @Override
+    public void handle() {
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_LEAVE_MONESTRY ||
                 Settings.get(Constants.PROGRESS_SETTING_ID) == S_TALK_TO_MAGIC_INSTRUCTOR ||
                 Settings.get(Constants.PROGRESS_SETTING_ID) == S_MAGIC_TAB_OPEN_TALK_TO_MAGIC_INSTRUCTOR ||
@@ -37,7 +37,7 @@ public final class MagicInstructorStep {
                 Magic.deselectSpell();
             }
 
-            MagicInstructorStep.talk();
+            talk();
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_OPEN_MAGIC_TAB) {
@@ -45,7 +45,7 @@ public final class MagicInstructorStep {
         }
 
         if (Settings.get(Constants.PROGRESS_SETTING_ID) == S_WIND_STRIKE_CHICKEN &&
-                InteractionUtil.walkToLocatable(new Tile(3140, 3090), 0) &&
+                InteractionUtil.walkTo(new Tile(3140, 3090), 0) &&
                 (Magic.getSelectedSpell() == SpellBooks.Modern.WIND_STRIKE ||
                         Magic.cast(SpellBooks.Modern.WIND_STRIKE))) {
 
@@ -54,8 +54,8 @@ public final class MagicInstructorStep {
         }
     }
 
-    private static void talk() {
-        if (InteractionUtil.walkToLocatable(ENTRANCE_TILE, 7)) {
+    private void talk() {
+        if (InteractionUtil.walkTo(ENTRANCE_TILE, 7)) {
             InteractionUtil.walkToAndInteract(Npcs.getNearest("Magic Instructor"), "Talk-to", Constants.CAN_CONTINUE_DIALOG_COND, 3000);
         }
     }

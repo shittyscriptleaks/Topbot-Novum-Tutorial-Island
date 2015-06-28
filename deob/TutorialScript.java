@@ -13,6 +13,8 @@ import org.tbot.methods.input.keyboard.Keyboard;
 import org.tbot.wrappers.WidgetChild;
 
 import java.awt.*;
+import java.util.LinkedList;
+import java.util.List;
 
 @Manifest(name = "Tutorial Island",
         description = "Completes tutorial island for you.. for free!",
@@ -20,6 +22,8 @@ import java.awt.*;
         openSource = true,
         category = ScriptCategory.OTHER)
 public final class TutorialScript extends AbstractScript implements PaintListener {
+
+    private final List<TutorialStep> steps = new LinkedList<>();
 
     public TutorialScript() {
         TBot.getBot().getScriptHandler().getEventManager().addListener(this);
@@ -31,6 +35,17 @@ public final class TutorialScript extends AbstractScript implements PaintListene
         TBot.getBot().getScriptHandler().getRandomHandler().get(RandomHandler.AUTO_LOGIN).enable();
         TBot.getBot().getScriptHandler().getRandomHandler().get(RandomHandler.TOGGLE_ROOF).enable();
         WebUtil.correctWeb();
+
+        steps.add(new BankAndPollStep());
+        steps.add(new BrotherBraceStep());
+        steps.add(new CombatInstructorStep());
+        steps.add(new CookingGuyStep());
+        steps.add(new FinancialAdvisorStep());
+        steps.add(new MagicInstructorStep());
+        steps.add(new QuestGuyStep());
+        steps.add(new RunescapeGuideStep());
+        steps.add(new SmithingGuyStep());
+        steps.add(new SurvivalExpertStep());
         return true;
     }
 
@@ -42,45 +57,7 @@ public final class TutorialScript extends AbstractScript implements PaintListene
                 return 600;
             }
 
-            if (!RunescapeGuideStep.hasProgressedPast()) {
-                RunescapeGuideStep.handle();
-            }
-
-            if (!QuestGuyStep.hasProgressedPast()) {
-                QuestGuyStep.handle();
-            }
-
-            if (!BrotherBraceStep.hasProgressedPast()) {
-                BrotherBraceStep.handle();
-            }
-
-            if (!SmithingGuyStep.hasProgressedPast()) {
-                SmithingGuyStep.handle();
-            }
-
-            if (!MagicInstructorStep.hasProgressedPast()) {
-                MagicInstructorStep.handle();
-            }
-
-            if (!SurvivalExpertStep.hasProgressedPast()) {
-                SurvivalExpertStep.handle();
-            }
-
-            if (!FinancialAdvisorStep.hasProgressedPast()) {
-                FinancialAdvisorStep.handle();
-            }
-
-            if (!CombatInstructorStep.hasProgressedPast()) {
-                CombatInstructorStep.handle();
-            }
-
-            if (!CookingGuyStep.hasProgressedPast()) {
-                CookingGuyStep.handle();
-            }
-
-            if (!BankAndPollStep.hasProgressedPast()) {
-                BankAndPollStep.handle();
-            }
+            steps.stream().filter(s -> !s.hasProgressedPast()).forEach(TutorialStep::handle);
 
             if (Settings.get(Constants.PROGRESS_SETTING_ID) >= 1000 && Game.logout()) {
                 TBot.getBot().getScriptHandler().stopScript();
